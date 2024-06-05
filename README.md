@@ -15,3 +15,7 @@ Proyectos realizados en mi estancia de la Maestría en Ciencia de Datos
 * Para crear una nueva app `otree startapp your_app_name`
 
 * La configuración de la sesión se modifica en: `settings.py`. Ésta es la que necesito modificar si quiero ver más de dos tutoriales.
+
+# Tutoriales
+
+https://docs.google.com/presentation/d/1gtmxog91PiQGok_Dvaml-znbKZ3kJeK9BT2O0Ymvas0/edit?usp=sharing
