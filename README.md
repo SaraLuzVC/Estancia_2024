@@ -10,8 +10,8 @@ Proyectos realizados en mi estancia de la Maestría en Ciencia de Datos
 
 * `otree devserver`, para iniciar el servidor
 
-Open your browser to http://localhost:8000/. You should see the oTree demo site.
+* Los demos se visualizan en el servidor: http://localhost:8000/. 
 
-To create a new app, run otree startapp your_app_name.
+* Para crear una nueva app `otree startapp your_app_name`
 
-Session configs are defined in settings.py.
+* La configuración de la sesión se modifica en: `settings.py`. Ésta es la que necesito modificar si quiero ver más de dos tutoriales.
