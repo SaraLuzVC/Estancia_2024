@@ -1,0 +1,23 @@
+REVISAR ESTÉ INSTALADO
+pip3 install virtualenv
+
+CREAR AMBIENTE
+virtualenv estancia
+
+REVISAR UBICACIÓN DEL AMBIENTE
+which python
+
+ACTIVAR AMBIENTE
+source estancia/bin/activate
+
+LISTAR DEPENDENCIAS
+pip list
+
+GUARDAR DEPENDENCIAS
+pip freeze --local > requirements.txt
+
+DESACTIVAR AMBIENTE
+deactivate
+
+REFERENCIA
+https://www.youtube.com/watch?v=SeJvz-ngCnk
