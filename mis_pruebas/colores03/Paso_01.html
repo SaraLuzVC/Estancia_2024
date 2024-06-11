@@ -1,0 +1,19 @@
+{{ block title }}Paso 01{{ endblock }}
+{{ block content }}
+
+
+{{if is_sender }}
+    Tu color es {{ your_color}} 
+
+    {{ formfields }}
+
+    <p>Presiona "Next" para anunciarlo a tu empleado.</p>
+
+{{ else }}
+    <p>Tu jefe te va a anunciar su color</p>
+{{ endif }}
+
+{{ next_button }}
+
+
+{{ endblock }}

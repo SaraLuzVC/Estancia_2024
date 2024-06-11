@@ -13,10 +13,16 @@ SESSION_CONFIGS = [
         app_sequence=["colores01"],
     ),
     dict(
-        name="survey",
+        name="colores02",
         display_name="Survey",
         num_demo_participants=2,
         app_sequence=["colores02"],
+    ),
+    dict(
+        name="colores03",
+        display_name="Colores03",
+        num_demo_participants=2,
+        app_sequence=["colores03"],
     ),
 ]
 

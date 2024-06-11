@@ -1,0 +1,23 @@
+{{ block title }}Paso 06{{ endblock }}
+{{ block content }}
+
+{{if is_sender }}
+<p> Tu empleado te envía el siguiente mensaje</p>
+<p> {{anuncio}}</p>
+{{ formfields }}
+
+
+{{ else }}
+<p>Enviando tu mensaje a tu jefe.</p>
+
+
+{{ endif }}
+
+
+
+
+{{ next_button }}
+
+
+
+{{ endblock }}
