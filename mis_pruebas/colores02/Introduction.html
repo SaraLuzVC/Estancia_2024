@@ -1,0 +1,17 @@
+{{ block title }}Introduction{{ endblock }}
+{{ block content }}
+
+<h1>Introduction</h1>
+
+{{if is_sender }}
+    {{ formfields }}
+    {{ formfield_errors 'comunicar' }}
+    {{ next_button }}
+{{ else }}
+    <p>Esperando a que el otro jugador decida</p>
+{{ endif }}
+
+
+
+
+{{ endblock }}

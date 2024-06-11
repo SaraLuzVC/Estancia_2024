@@ -9,8 +9,71 @@ SESSION_CONFIGS = [
         num_demo_participants=3,
     ),
     dict(
-        name='survey', app_sequence=['survey', 'payment_info'], num_demo_participants=1
+        name='survey', 
+        app_sequence=['survey', 'payment_info'], 
+        num_demo_participants=1
     ),
+    dict(
+        name='public_goods_simple', 
+        app_sequence=['public_goods_simple', 'payment_info'], 
+        num_demo_participants=3
+    ),
+    dict(
+        name='trust', 
+        app_sequence=['trust', 'payment_info'], 
+        num_demo_participants=2
+    ),
+    dict(
+        name='traveler_dilemma', 
+        app_sequence=['traveler_dilemma', 'payment_info'], 
+        num_demo_participants=2
+    ),
+    dict(
+        name='prisoner', 
+        app_sequence=['prisoner', 'payment_info'], 
+        num_demo_participants=2
+    ),
+    dict(
+        name='matching_pennies', 
+        app_sequence=['matching_pennies', 'payment_info'], 
+        num_demo_participants=2
+    ),
+    dict(
+        name='bargaining',
+        app_sequence=['bargaining', 'payment_info'],
+        num_demo_participants=2
+    ),
+    dict(
+        name='bertrand', 
+        app_sequence=['bertrand', 'payment_info'], 
+        num_demo_participants=2
+    ),
+    dict(
+        name='common_value_auction',
+        app_sequence=['common_value_auction', 'payment_info'], 
+        num_demo_participants=2
+    ),
+    dict(
+        name='cournot', 
+        app_sequence=['cournot', 'payment_info'], 
+        num_demo_participants=2
+    ),
+    dict(
+        name='dictator', 
+        app_sequence=['dictator', 'payment_info'], 
+        num_demo_participants=2
+    ),
+    dict(
+        name='trust_simple',
+        app_sequence=['trust_simple', 'payment_info'],
+        num_demo_participants=2
+    ),
+    dict(
+        name='volunteer_dilemma', 
+        app_sequence=['volunteer_dilemma', 'payment_info'], 
+        num_demo_participants=2
+    ),
+    
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs

@@ -1,0 +1,24 @@
+{{ block title }}Survey{{ endblock }}
+{{ block content }}
+
+    <p>
+        Tu color es {{ your_color}} y es {{is_sender}} que puedes mandar mensajes.
+    </p>
+
+{{if is_sender }}
+El color de tu compañero es {{ partner_color }}.
+{{ else }}
+    {{if show_color}}
+    <p>El color de tu compañero es {{ partner_color }}.</p>
+    {{endif}}
+{{ endif }}
+
+<p>Por favor, responde a las siguientes preguntas:</p>
+
+    {{ formfields }}
+
+    {{ next_button }}
+
+
+
+{{ endblock }}
