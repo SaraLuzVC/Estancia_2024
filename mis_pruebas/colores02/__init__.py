@@ -41,6 +41,10 @@ class Player(BasePlayer):
     is_sender = models.BooleanField()
 
 
+def set_color_group(group: Group):
+    for p in group.get_players():
+        set_color(p)
+
 def set_color(player: Player):
     player.color_random = random.choice(C.COLORS)
     print(player.color_random)
@@ -54,7 +58,6 @@ def is_sender(player: Player):
     if player.id_in_group == 1:
         return True
     else:
-        player.comunicar = False
         return False
 
 
@@ -92,17 +95,22 @@ def set_payoff(group: Group):
 class Introduction(Page):
     timeout_seconds = 30
     form_model = "player"
-    form_fields = ["comunicar"]
-
+    @staticmethod
+    def get_form_fields(player: Player):
+        if player.id_in_group == 2:
+            return []
+        else:
+            return ['comunicar']
     @staticmethod
     def vars_for_template(player: Player):
-        if player.id_in_group == 2:
-            player.comunicar = True
-
         return {
             "is_sender": is_sender(player),
-            "set_color": set_color(player),
+            # "set_color": set_color(player),
         }
+
+
+class ColorsWaitPage(WaitPage):
+    after_all_players_arrive = set_color_group
 
 
 class Demographics(Page):
@@ -121,4 +129,4 @@ class Demographics(Page):
         }
 
 
-page_sequence = [Introduction, Demographics]
+page_sequence = [Introduction, ColorsWaitPage, Demographics]

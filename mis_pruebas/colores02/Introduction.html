@@ -6,12 +6,12 @@
 {{if is_sender }}
     {{ formfields }}
     {{ formfield_errors 'comunicar' }}
-    {{ next_button }}
+
 {{ else }}
     <p>Esperando a que el otro jugador decida</p>
 {{ endif }}
 
-
+{{ next_button }}
 
 
 {{ endblock }}
