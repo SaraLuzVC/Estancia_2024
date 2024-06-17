@@ -1,8 +1,15 @@
 {{ block title }}Paso 02{{ endblock }}
 {{ block content }}
 
+    
+{{if is_neutral }}
+    <p> Tu compañero te envía el siguiente mensaje</p>
+{{ else }}
     <p> Tu jefe te envía el siguiente mensaje</p>
+{{ endif }}
+
     <p> {{anuncio}}</p>
+
     {{ formfields }}
 
 

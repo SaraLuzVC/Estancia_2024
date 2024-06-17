@@ -2,14 +2,16 @@
 {{ block content }}
 
 
-Tu color es {{ your_color}} 
+Tu número es {{ your_color}} 
 
 {{ formfields }}
 
-<p>Presiona "Next" para anunciarlo a tu empleado.</p>
-
+{{if is_neutral }}
+    <p>Presiona "Next" para anunciarlo a tu compañero.</p>
+{{ else }}
+    <p>Presiona "Next" para anunciarlo a tu empleado.</p>
+{{ endif }}
 
 {{ next_button }}
-
 
 {{ endblock }}

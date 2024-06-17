@@ -1,0 +1,10 @@
+{{ block title }}Bienvenida{{ endblock }}
+{{ block content }}
+
+<h1>Bienvenido al experimento</h1>
+
+    {{ include_sibling 'instructions.html' }}
+    
+    {{ next_button }}
+
+{{ endblock }}

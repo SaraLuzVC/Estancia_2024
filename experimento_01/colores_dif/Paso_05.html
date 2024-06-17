@@ -1,10 +1,15 @@
 {{ block title }}Paso 05{{ endblock }}
 {{ block content }}
 
+Tu número es {{ your_color}}
 
-<p>Tu jefe accedió a que le comuniques tu color, recuerda tu color es {{ your_color}}</p>
-
-{{ formfields }}
+{{if is_neutral }}
+    {{ formfields }}
+    <p>Presiona "Next" para anunciarlo a tu compañero.</p>
+{{ else }}
+    <p>Tu jefe accedió a que le comuniques tu número.</p>
+    {{ formfields }}
+{{ endif }}
 
 {{ next_button }}
 

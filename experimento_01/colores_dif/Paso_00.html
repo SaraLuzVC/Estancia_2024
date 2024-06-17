@@ -1,12 +1,14 @@
 {{ block title }}Paso 0{{ endblock }}
+
 {{ block content }}
 
+{{if is_neutral }}
+    <p>Para el siguiente ejercicio> tu rol es: jugador {{player.id_in_group}}</p>
+{{ else }}
+    <p>Para el siguiente ejercicio: tu rol es: {{ player.role }}.</p>
+{{ endif }}
 
-<p>Hola tu rol es: {{ player.role }}.</p>
-
-<p>Presiona "Next" para comenzar el juego.</p>
-
+{{ formfields }}
 {{ next_button }}
-
 
 {{ endblock }}

@@ -17,6 +17,7 @@
     <table class="table" style="width:400px">
 
         <tr>
+            <th>Group</th>
             <th>Your bid</th>
             <th>Winning bid</th>
             <th>Actual value</th>
@@ -24,6 +25,7 @@
         </tr>
 
     <tr>
+        <td>{{ player.group }}</td>
         <td>{{ player.bid_amount }}</td>
         <td>{{ group.highest_bid }}</td>
         <td>{{ group.item_value }}</td>
