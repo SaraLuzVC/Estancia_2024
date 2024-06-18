@@ -14,6 +14,9 @@ class C(BaseConstants):
     ROLES = [AGENT_ROLE, PRINCIPAL_ROLE]
     PLACES = ['city', 'country']
     GAME_TYPES = ['neutral', 'differentiated']
+    PAYOFF_A = 100
+    PAYOFF_B = 75
+    PAYOFF_C = 25
 
 
 class Subsession(BaseSubsession):
@@ -61,6 +64,7 @@ class Player(BasePlayer):
         ],
         label="Qué número le tocó al otro jugador?",
         widget=widgets.RadioSelect,
+        initial=" ",
     )
     anuncio = models.StringField(
         label= "Manda un mensaje con tu número",
@@ -73,22 +77,27 @@ class Player(BasePlayer):
     p1 = models.IntegerField(
         label="¿Cuál es el valor de la exponente cero?",
         choices = [0, 1, 2, 00],
+        initial=-99,
     )
     p2 = models.IntegerField(
         label="Una rueda de un coche da 4590 vueltas en 9 min ¿Cuántas vueltas da en 24 horas y 24 minutos?",
         choices = [2453, 53474, 54534, 746640],
+        initial=-99,
     )
     p3 = models.IntegerField(
         label="¿Cuál es la raíz cuadrada de 100?",
         choices = [6, 8, 9, 10],
+        initial=-99,
     )
     p4 = models.StringField(
         label="¿Cómo se llama el restante que queda de un producto?",
         choices = ["Cociente", "Dividendo", "Resto o Residuo", "Divisor"],
+        initial=" ",
     )
     p5 = models.StringField(
         label="¿Cuál es la cuarta parte de la tercera parte",
         choices = ["1/12", "1/4", "1/6", "1/8"],
+        initial=" ",
     )
     
     
@@ -297,22 +306,25 @@ def which_color(player: Player):
 def message(player: Player):
     return player.anuncio
 
+# def set_payoffs(group: Group):
+#     for p in group.get_players():
+#         set_payoff(p)
+
+
 def set_payoffs(group: Group):
-    for p in group.get_players():
-        set_payoff(p)
-
-
-def set_payoff(group: Group):
-    p1 = group.get_player_by_id(1)
-    p2 = group.get_player_by_id(2)
-    if p1.color_seleccionado == p2.color_random:
-        p1.payoff = C.PAYOFF_A
-    if p1.color_seleccionado != p2.color_random:
-        p1.payoff = C.PAYOFF_B
-    if p2.color_seleccionado == p1.color_random:
-        p2.payoff = C.PAYOFF_A
-    if p2.color_seleccionado != p2.color_random:
-        p2.payoff = C.PAYOFF_B
+    p1 = group.get_player_by_role(C.PRINCIPAL_ROLE)
+    p2 = group.get_player_by_role(C.AGENT_ROLE)
+    print("Group", group.id, p1.id_in_group, p2.id_in_group)
+    if group.is_played:
+        if p1.in_round(1).color_random == p2.in_round(1).color_seleccionado and p1.in_round(1).color_seleccionado == p2.in_round(1).color_random:
+            p1.payoff = C.PAYOFF_A
+            p2.payoff = C.PAYOFF_A
+        else:
+            p1.payoff = C.PAYOFF_B
+            p2.payoff = C.PAYOFF_B
+    else:
+        p1.payoff = C.PAYOFF_C
+        p2.payoff = C.PAYOFF_C
 
 #############################################################
 # PAGES
@@ -516,18 +528,29 @@ class Pago(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        session = player.session
-
-        player_in_all_rounds = player.in_all_rounds()
-        return dict(
-            # total_payoff=sum([p.payoff for p in player_in_all_rounds]),
-            # paying_round=session.vars["paying_round"],
-            player_in_all_rounds=player_in_all_rounds,
-        )
+        others_in_group = player.get_others_in_group()
+        return {
+            "decision": player.group.is_played,
+            "num_1a": player.in_round(1).color_random,
+            "num_1b": others_in_group[0].in_round(1).color_seleccionado,
+            "num_2a": player.in_round(2).color_random,
+            "num_2b": others_in_group[0].in_round(2).color_seleccionado,
+            "pago": player.payoff,
+            "p1": player.in_round(1).p1,
+            "p2": player.in_round(1).p2,
+            "p3": player.in_round(1).p3,
+            "p4": player.in_round(1).p4,
+            "p5": player.in_round(1).p5,
+        }
 
 
 class ColorsWaitPage2(WaitPage):
     pass
+
+
+class ResultsWaitPage(WaitPage):
+    after_all_players_arrive = set_payoffs
+
 
 page_sequence = [
     # Registro,
@@ -548,5 +571,6 @@ page_sequence = [
     Paso_06,
     ColorsWaitPage2,
     Quiz,
+    ResultsWaitPage,
     Pago
 ]

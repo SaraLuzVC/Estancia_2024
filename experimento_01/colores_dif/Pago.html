@@ -1,8 +1,26 @@
 {{ block title }}Pago{{ endblock }}
 {{ block content }}
 
-Tu decidiste XXXXX
+{{if decision }}
+    <p>Decidiste jugar con tu compañero.</p>
+    Tus resultados son los siguientes:
+    <ul>
+        <li>Tu numero en la ronda 1 fue {{ num_1a }} y tu compañero dijo {{num_1b}}</li>
+        <li>Tu numero en la ronda 2 fue {{ num_2a }} y tu compañero dijo {{num_2b}}</li>
 
+{{ else }}
+    <p>Decidiste no jugar con tu compañero.</p>
+    Tus respuestas son los siguientes:
+    <ul>
+        <li>Pregunta 1: {{p1}}</li>
+        <li>Pregunta 2: {{p2}}</li>
+        <li>Pregunta 3: {{p3}}</li>
+        <li>Pregunta 4: {{p4}}</li>
+        <li>Pregunta 5: {{p5}}</li>
+
+{{ endif }}
+
+        Tu pago es de {{ pago }}.
 
 {{ next_button}}
 
