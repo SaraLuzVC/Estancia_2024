@@ -49,6 +49,7 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
         initial=True,
     )
+    # decided_not_to_play = models.BooleanField(initial=False)
     color_random = models.StringField()
     color_seleccionado = models.StringField(
         choices=[
@@ -69,6 +70,28 @@ class Player(BasePlayer):
         label= "Pide permiso a tu jefe para comunicar tu número",
         initial=" ",
     )
+    p1 = models.IntegerField(
+        label="¿Cuál es el valor de la exponente cero?",
+        choices = [0, 1, 2, 00],
+    )
+    p2 = models.IntegerField(
+        label="Una rueda de un coche da 4590 vueltas en 9 min ¿Cuántas vueltas da en 24 horas y 24 minutos?",
+        choices = [2453, 53474, 54534, 746640],
+    )
+    p3 = models.IntegerField(
+        label="¿Cuál es la raíz cuadrada de 100?",
+        choices = [6, 8, 9, 10],
+    )
+    p4 = models.StringField(
+        label="¿Cómo se llama el restante que queda de un producto?",
+        choices = ["Cociente", "Dividendo", "Resto o Residuo", "Divisor"],
+    )
+    p5 = models.StringField(
+        label="¿Cuál es la cuarta parte de la tercera parte",
+        choices = ["1/12", "1/4", "1/6", "1/8"],
+    )
+    
+    
     # anuncio2 = models.StringField(
     #     label="Manda un mensaje a tu jefe con tu número",
     #     initial=" ",
@@ -149,16 +172,26 @@ def creating_session(session: Subsession):
             # MATRIX = session.get_group_matrix()
             # print("Matrix", MATRIX)
             # session.set_group_matrix(MATRIX)
-            
+
     else:
         # session.set_group_matrix(MATRIX)
         session.group_like_round(1)
+        # copy_decided_not_to_play(session)
         for g in session.get_groups():
             set_game_type(g)
             print("Group", g.id, g.game_type)
             for p in g.get_players():
                 print(p.participant.label, p.participant.id_in_session, p.id_in_group)
 
+
+# def copy_decided_not_to_play(subsession: Subsession):
+#     previous_round_players = subsession.in_round(
+#         subsession.round_number - 1
+#     ).get_players()
+#     current_round_players = subsession.get_players()
+
+#     for prev_player, curr_player in zip(previous_round_players, current_round_players):
+#         curr_player.decided_not_to_play = prev_player.decided_not_to_play
 
 
 def set_treatment(player: Player):
@@ -221,10 +254,25 @@ def set_game_type(group: Group):
     else:
         group.game_type = C.GAME_TYPES[1]
 
+
 def set_played(group: Group):
-    decision_1 = group.get_player_by_id(1).wants_to_play
-    decision_2 = group.get_player_by_id(2).wants_to_play
-    group.is_played = decision_1 and decision_2
+    if group.round_number == 1:
+        decision_1 = group.get_player_by_id(1).wants_to_play
+        decision_2 = group.get_player_by_id(2).wants_to_play
+        group.is_played = decision_1 and decision_2
+    else:
+        decision_1 = group.get_player_by_id(1).in_round(group.round_number - 1).wants_to_play
+        decision_2 = group.get_player_by_id(2).in_round(group.round_number - 1).wants_to_play
+        group.is_played = decision_1 and decision_2
+    # for p in group.get_players():
+    #     if p.round_number == 1:
+    #         p.decided_not_to_play = not p.wants_to_play
+    #     elif p.decided_not_to_play:
+    #         p.wants_to_play = False
+
+    # decision_1 = group.get_player_by_id(1).wants_to_play
+    # decision_2 = group.get_player_by_id(2).wants_to_play
+    # group.is_played = decision_1 and decision_2
 
 
 def set_color_group(group: Group):
@@ -269,15 +317,24 @@ def set_payoff(group: Group):
 #############################################################
 # PAGES
 
-class Registro(Page):
-    form_model = "player"
-    form_fields = ["nombre", "place"]
+# class Registro(Page):
+#     form_model = "player"
+#     form_fields = ["nombre", "place"]
 
 class Bienvenida(Page):
     form_model = "player"
+    @staticmethod
+    def is_displayed(player: Player):
+        condition = player.round_number == 1
+        return condition
+
 
 class AssignRolesWaitPage(WaitPage):
     wait_for_all_groups = True
+    @staticmethod
+    def is_displayed(player: Player):
+        condition = player.round_number == 1
+        return condition
     # after_all_players_arrive = set_roles_and_games
 
 
@@ -285,6 +342,10 @@ class Paso_00(Page):
     # timeout_seconds = 30
     form_model = "player"
     form_fields = ["wants_to_play"]
+    @staticmethod
+    def is_displayed(player: Player):
+        condition = player.round_number == 1
+        return condition
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -438,8 +499,31 @@ class Paso_06(Page):
         }
 
 
-class Pago(Page):
+class Quiz(Page):
     form_model = "player"
+    form_fields = ['p1', 'p2', 'p3', 'p4', 'p5']
+
+    @staticmethod
+    def is_displayed(player):
+        condition = not player.group.is_played and player.round_number == 1
+        return condition
+
+
+class Pago(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == C.NUM_ROUNDS
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        session = player.session
+
+        player_in_all_rounds = player.in_all_rounds()
+        return dict(
+            # total_payoff=sum([p.payoff for p in player_in_all_rounds]),
+            # paying_round=session.vars["paying_round"],
+            player_in_all_rounds=player_in_all_rounds,
+        )
 
 
 class ColorsWaitPage2(WaitPage):
@@ -462,5 +546,7 @@ page_sequence = [
     Paso_05,
     ColorsWaitPage2,
     Paso_06,
-    ColorsWaitPage2
+    ColorsWaitPage2,
+    Quiz,
+    Pago
 ]
