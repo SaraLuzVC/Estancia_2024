@@ -16,6 +16,8 @@ Proyectos realizados en mi estancia de la Maestría en Ciencia de Datos
 
 * La configuración de la sesión se modifica en: `settings.py`. Ésta es la que necesito modificar si quiero ver más de dos tutoriales.
 
+* Para generar el zip que se sube a Heroku `otree zip`
+
 # Tutoriales
 
 https://docs.google.com/presentation/d/1gtmxog91PiQGok_Dvaml-znbKZ3kJeK9BT2O0Ymvas0/edit?usp=sharing
