@@ -102,6 +102,40 @@ class Player(BasePlayer):
         max=C.ENDOWMENT,
         label="VERY ROUGH DRAFT: Of all the recipient-manipulators who share one identity with their dictator, which percentage do you think also shares the other?",
     )
+    x_dd_cc = models.CurrencyField(
+        min=0,
+        max=C.ENDOWMENT,
+        label="Suppose you share both identities with the recipient. How much of your endowment would you give to the recipient?",
+    )
+    x_dd_dd = models.CurrencyField(
+        min=0,
+        max=C.ENDOWMENT,
+        label="Suppose you do not share either identity with the recipient. How much of your endowment would you give to the recipient?",
+    )
+    x_dd_cdc = models.CurrencyField(
+        min=0,
+        max=C.ENDOWMENT,
+        label="Suppose you share one identity with the recipient, differ in the other identity. You  chose to announce the identity you have in common in this case. How much of your endowment would you give to the recipient?",
+    )
+    x_dd_cdd = models.CurrencyField(
+        min=0,
+        max=C.ENDOWMENT,
+        label="Suppose you share one identity with the recipient, differ in the other identity. You chose to announce the identity you differ in in this case. How much of your endowment would you give to the recipient?",
+    )
+    mu_dd_c = models.CurrencyField(
+        min=0,
+        max=C.ENDOWMENT,
+        label="How much do you think the Recipients expect to receive on average when you reveal a common identity?",
+    )
+    mu_dd_d = models.CurrencyField(
+        min=0,
+        max=C.ENDOWMENT,
+        label="How much do you think the Recipients expect to receive on average when you reveal a different identity?",
+    )
+    mu_dd = models.StringField(
+        label="Which identity would you like to reveal to the recipient?",
+        choices=["common identity", "different identity"],
+    )
 
 ####################################################################################################
 
@@ -288,17 +322,17 @@ class Robust(Page):
         }
 
 
-class D_DD(Page):
+class D_DD_1(Page):
     form_model = "player"
 
     @staticmethod
     def is_displayed(player: Player):
         mod5 = player.id_in_group % 5
-        return mod5 == 1 and player.participant.coin_flip == "Heads"
+        return mod5 == 2 and player.participant.coin_flip == "Heads"
 
     @staticmethod
     def get_form_fields(self):
-        questionnaire = ["x_dr_c", "x_dr_d"]
+        questionnaire = ["x_dd_cc", "x_dd_dd"]
         random.shuffle(questionnaire)
         return questionnaire
 
@@ -310,6 +344,73 @@ class D_DD(Page):
             "coin": player.participant.coin_flip,
         }
 
+
+class D_DD_2(Page):
+    form_model = "player"
+
+    @staticmethod
+    def is_displayed(player: Player):
+        mod5 = player.id_in_group % 5
+        return mod5 == 2 and player.participant.coin_flip == "Heads"
+
+    @staticmethod
+    def get_form_fields(self):
+        questionnaire = ["x_dd_cdc", "x_dd_cdd"]
+        random.shuffle(questionnaire)
+        return questionnaire
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "your_color": player.participant.color,
+            "your_painter": player.participant.painter,
+            "coin": player.participant.coin_flip,
+        }
+
+class D_DD_3(Page):
+    form_model = "player"
+
+    @staticmethod
+    def is_displayed(player: Player):
+        mod5 = player.id_in_group % 5
+        return mod5 == 2 and player.participant.coin_flip == "Heads"
+
+    @staticmethod
+    def get_form_fields(self):
+        questionnaire = ["mu_dd_c", "mu_dd_d"]
+        random.shuffle(questionnaire)
+        return questionnaire
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "your_color": player.participant.color,
+            "your_painter": player.participant.painter,
+            "coin": player.participant.coin_flip,
+        }
+
+
+class D_DD_4(Page):
+    form_model = "player"
+
+    @staticmethod
+    def is_displayed(player: Player):
+        mod5 = player.id_in_group % 5
+        return mod5 == 2 and player.participant.coin_flip == "Heads"
+
+    @staticmethod
+    def get_form_fields(self):
+        questionnaire = ["mu_dd"]
+        random.shuffle(questionnaire)
+        return questionnaire
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "your_color": player.participant.color,
+            "your_painter": player.participant.painter,
+            "coin": player.participant.coin_flip,
+        }
 
 class P_C0(Page):
     form_model = "player"
@@ -457,6 +558,10 @@ page_sequence = [
     P_C1_C0_2,
     P_C1_C0_3,
     P_C1_C0_4,
+    D_DD_1,
+    D_DD_2,
+    D_DD_3,
+    D_DD_4,
     # D_DD,
     # P_C0,
     # R_C1,
