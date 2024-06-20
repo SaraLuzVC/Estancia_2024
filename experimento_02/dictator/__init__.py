@@ -177,6 +177,7 @@ class Player(BasePlayer):
         label=" Now suppose that you are the recipient in a different dictator game against a single person. You share one identity with the dictator, and the other identity is different from that of the dictator. Which identity would you like to reveal to the dictator?",
         choices=["common identity", "different identity"],
     )
+    game_role = models.StringField()
 
 ####################################################################################################
 
@@ -193,6 +194,31 @@ def change_coin_flip(player: Player):
     else:
         player.participant.vars["coin_flip"] = "Heads"
 
+def set_game_roles(player: Player):
+    mod5 = player.id_in_group % 5
+    coin = player.participant.coin_flip
+    if mod5 == 1 and coin == "Heads":
+        player.game_role = "D(DR)"
+    elif mod5 == 1 and coin == "Tails":
+        player.game_role = "P(C1)"
+    elif mod5 == 2 and coin == "Heads":
+        player.game_role = "D(DD)"
+    elif mod5 == 2 and coin == "Tails":
+        player.game_role = "P(C0)"
+    elif mod5 == 3 and coin == "Heads":
+        player.game_role = "P(C0)"
+    elif mod5 == 3 and coin == "Tails":
+        player.game_role = "P(C1)"
+    elif mod5 == 4 and coin == "Heads":
+        player.game_role = "R(C1)"
+    elif mod5 == 4 and coin == "Tails":
+        player.game_role = "R(DR)"
+    elif mod5 == 0 and coin == "Heads":
+        player.game_role = "R(DD)"
+    elif mod5 == 0 and coin == "Tails":
+        player.game_role = "R(C0)"
+
+
 ####################################################################################################
 
 # PAGES
@@ -208,6 +234,7 @@ class Introduction(Page):
     def before_next_page(player: Player, timeout_happened):
         if player.round_number != 1:
             change_coin_flip(player)
+        set_game_roles(player)
 
 class D_DR(Page):
     form_model = 'player'
