@@ -295,8 +295,8 @@ def set_payoffs(group: Group):
             p2.pay_2 = 0
         else:
             p5.pay_2 = p2_PC0.xc_dc
-            p2.pay_1 = C.ENDOWMENT - p2_PC0.xc_dc
-            p3.pay_2 = 0
+            p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_dc
+            p3.pay_1 = 0
     else:
         aux = random.choice([1, 0])
         if aux == 1:
