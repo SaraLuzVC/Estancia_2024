@@ -421,6 +421,44 @@ def set_game_roles(player: Player):
         player.game_role = "R(C0)"
 
 
+def get_instructions_template(player: Player):
+    coin = player.participant.coin_flip  # Assuming the coin value is stored in the player's model
+    player_id = player.id_in_group
+
+    if player_id == 1:
+        return "instructions_DR.html" if coin == "Heads" else "instructions_C1.html"
+    elif player_id == 2:
+        return "instructions_DD.html" if coin == "Heads" else "instructions_C0.html"
+    elif player_id == 3:
+        return "instructions_C0.html" if coin == "Heads" else "instructions_C1.html"
+    elif player_id == 4:
+        return "instructions_C1.html" if coin == "Heads" else "instructions_DR.html"
+    elif player_id == 5:
+        return "instructions_DD.html" if coin == "Heads" else "instructions_C0.html"
+    else:
+        return ""
+
+
+def get_instructions_template2(player: Player):
+    coin = (
+        player.participant.coin_flip
+    )  # Assuming the coin value is stored in the player's model
+    player_id = player.id_in_group
+
+    if player_id == 1:
+        return "instructions_C1.html" if coin == "Heads" else "instructions_DR.html"
+    elif player_id == 2:
+        return "instructions_C0.html" if coin == "Heads" else "instructions_DD.html"
+    elif player_id == 3:
+        return "instructions_C1.html" if coin == "Heads" else "instructions_C0.html"
+    elif player_id == 4:
+        return "instructions_DR.html" if coin == "Heads" else "instructions_C1.html"
+    elif player_id == 5:
+        return "instructions_C0.html" if coin == "Heads" else "instructions_DD.html"
+    else:
+        return ""
+
+
 ####################################################################################################
 
 # PAGES
@@ -431,6 +469,8 @@ class Introduction(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
+            "instructions_template_2": get_instructions_template2(player),
         }
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
@@ -458,6 +498,7 @@ class D_DR(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class P_C1_C0_1(Page):
@@ -484,6 +525,7 @@ class P_C1_C0_1(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class P_C1_C0_2(Page):
@@ -510,6 +552,7 @@ class P_C1_C0_2(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class P_C1_C0_3(Page):
@@ -536,6 +579,7 @@ class P_C1_C0_3(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -563,6 +607,7 @@ class P_C1_C0_4(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -589,6 +634,7 @@ class Robust(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -612,6 +658,7 @@ class D_DD_1(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -635,6 +682,7 @@ class D_DD_2(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class D_DD_3(Page):
@@ -657,6 +705,7 @@ class D_DD_3(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -680,6 +729,7 @@ class D_DD_4(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class R_C1_C0_1(Page):
@@ -704,6 +754,7 @@ class R_C1_C0_1(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class R_C1_C0_2(Page):
@@ -728,6 +779,7 @@ class R_C1_C0_2(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -753,6 +805,7 @@ class R_C1_C0_3(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -778,6 +831,7 @@ class R_DR_DD(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -801,6 +855,7 @@ class R_DR_2(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 

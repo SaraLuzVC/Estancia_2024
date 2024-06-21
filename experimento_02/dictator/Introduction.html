@@ -1,9 +1,16 @@
 {{ block title }}Introduction{{ endblock }}
 {{ block content }}
-    {{ include_sibling 'instructions.html' }}
-    {{ next_button }}
+
+{{ if player.round_number == 1 }}
+{{ include_sibling instructions_template }}
+{{else}}
+{{ include_sibling instructions_template_2}}
+{{endif}}
+
+   {{ next_button }}
 
     {{your_color}}
     {{your_painter}}
     {{coin}}
+
 {{ endblock }}
