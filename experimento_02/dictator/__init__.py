@@ -151,7 +151,7 @@ class Player(BasePlayer):
         max=C.ENDOWMENT,
         label="How much do you expect to receive from a dictator who knows that one (maybe two) of your identities is not shared by him or her?",
     )
-    
+
     mu1_C_mu2_C_R = models.CurrencyField(
         min=0,
         max=C.ENDOWMENT,
@@ -172,12 +172,18 @@ class Player(BasePlayer):
         max=C.ENDOWMENT,
         label="Suppose you share an identity with one of the potential dictators, do not share an identity with the other potential dictator, and selected the potential dictator with whom you differ in an identity. How much do you expect to receive from the selected potential dictator? ",
     )
-    
+
     mu_dr = models.StringField(
         label=" Now suppose that you are the recipient in a different dictator game against a single person. You share one identity with the dictator, and the other identity is different from that of the dictator. Which identity would you like to reveal to the dictator?",
         choices=["common identity", "different identity"],
     )
     game_role = models.StringField()
+    pay_1 = models.CurrencyField(
+        initial = 0,
+    )
+    pay_2 = models.CurrencyField(
+        initial=0,
+    )
 
 ####################################################################################################
 
@@ -185,8 +191,204 @@ class Player(BasePlayer):
 def set_payoffs(group: Group):
     p1 = group.get_player_by_id(1)
     p2 = group.get_player_by_id(2)
-    p1.payoff = group.kept
-    p2.payoff = C.ENDOWMENT - group.kept
+    p3 = group.get_player_by_id(3)
+    p4 = group.get_player_by_id(4)
+    p5 = group.get_player_by_id(5)
+
+    if p1.participant.coin_flip == "Tails":
+        p1_DDR = group.get_player_by_id(1).in_round(1)
+        p1_PC1 = group.get_player_by_id(1).in_round(2)
+    else:
+        p1_DDR = group.get_player_by_id(1).in_round(2)
+        p1_PC1 = group.get_player_by_id(1).in_round(1)
+    if p2.participant.coin_flip == "Tails":
+        p2_DDD = group.get_player_by_id(2).in_round(1)
+        p2_PC0 = group.get_player_by_id(2).in_round(2)
+    else:
+        p2_DDD = group.get_player_by_id(2).in_round(2)
+        p2_PC0 = group.get_player_by_id(2).in_round(1)
+    if p3.participant.coin_flip == "Tails":
+        p3_PC0 = group.get_player_by_id(3).in_round(1)
+        p3_PC1 = group.get_player_by_id(3).in_round(2)
+    else:
+        p3_PC0 = group.get_player_by_id(3).in_round(2)
+        p3_PC1 = group.get_player_by_id(3).in_round(1)
+    if p4.participant.coin_flip == "Tails":
+        p4_RC1 = group.get_player_by_id(4).in_round(1)
+        p4_RDR = group.get_player_by_id(4).in_round(2)
+    else:
+        p4_RC1 = group.get_player_by_id(4).in_round(2)
+        p4_RDR = group.get_player_by_id(4).in_round(1)
+    if p5.participant.coin_flip == "Tails":
+        p5_RDD = group.get_player_by_id(5).in_round(1)
+        p5_RC0 = group.get_player_by_id(5).in_round(2)
+    else:
+        p5_RC0 = group.get_player_by_id(5).in_round(2)
+        p5_RDD = group.get_player_by_id(5).in_round(1)
+
+    common_id_DR_C11 = get_common_identities(p1, p4)
+    common_id_DD_C02 = get_common_identities(p2, p5)
+    common_id_C0_3 = get_common_identities(p3, p5)
+    common_id_C1_3 = get_common_identities(p3, p4)
+
+    if common_id_DR_C11 == 0:
+        p4.pay_1 = p1_DDR.x_dr_d
+        p1.pay_1 = C.ENDOWMENT - p1_DDR.x_dr_d
+    elif common_id_DR_C11 == 2:
+        p4.pay_1 = p1_DDR.x_dr_c
+        p1.pay_1 = C.ENDOWMENT - p1_DDR.x_dr_c
+    else:
+        if p4_RDR.mu_dr == "common identity":
+            p4.pay_1 = p1_DDR.x_dr_c
+            p1.pay_1 = C.ENDOWMENT - p1_DDR.x_dr_c
+        else:
+            p4.pay_1 = p1_DDR.x_dr_d
+            p1.pay_1 = C.ENDOWMENT - p1_DDR.x_dr_d
+
+    if common_id_DD_C02 == 0:
+        p5.pay_1 = p2_DDD.x_dd_dd
+        p2.pay_1 = C.ENDOWMENT - p2_DDD.x_dd_dd
+    elif common_id_DD_C02 == 2:
+        p5.pay_1 = p2_DDD.x_dd_cc
+        p2.pay_1 = C.ENDOWMENT - p2_DDD.x_dd_cc
+    else:
+        if p2_DDD.mu_dd == "common identity":
+            p5.pay_1 = p2_DDD.x_dd_cdc
+            p2.pay_1 = C.ENDOWMENT - p2_DDD.x_dd_cdc
+        else:
+            p5.pay_1 = p2_DDD.x_dd_cdd
+            p2.pay_1 = C.ENDOWMENT - p2_DDD.x_dd_cdd
+
+    if common_id_C0_3 == 0 and common_id_DD_C02 == 0:
+        aux = random.choice([1,0])
+        if aux == 1:
+            p5.pay_2 = p3_PC0.xc_dd
+            p3.pay_1 = C.ENDOWMENT - p3_PC0.xc_dd
+            p2.pay_2 = 0
+        else:
+            p5.pay_2 = p2_PC0.xc_dd
+            p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_dd
+            p3.pay_1 = 0
+    elif common_id_C0_3 == 2 and common_id_DD_C02 == 2:
+        aux = random.choice([1, 0])
+        if aux == 1:
+            p5.pay_2 = p3_PC0.xc_cc
+            p3.pay_1 = C.ENDOWMENT - p3_PC0.xc_cc
+            p2.pay_2 = 0
+        else:
+            p5.pay_2 = p2_PC0.xc_cc
+            p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_cc
+            p3.pay_1 = 0
+    elif common_id_C0_3 == 0 and (common_id_DD_C02 == 2 or common_id_DD_C02 == 1):
+        if p5_RC0.sigma_cr == "common identity":
+            p5.pay_2 = p2_PC0.xc_cd
+            p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_cd
+            p3.pay_1 = 0
+        else:
+            p5.pay_2 = p3_PC0.xc_dc
+            p3.pay_1 = C.ENDOWMENT - p3_PC0.xc_dc
+            p2.pay_2 = 0
+    elif (common_id_C0_3 == 2 or common_id_C0_3 == 1) and common_id_DD_C02 == 0:
+        if p5_RC0.sigma_cr == "common identity":
+            p5.pay_2 = p3_PC0.xc_cd
+            p3.pay_1 = C.ENDOWMENT - p3_PC0.xc_cd
+            p2.pay_2 = 0
+        else:
+            p5.pay_2 = p2_PC0.xc_dc
+            p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_dc
+            p3.pay_1 = 0
+    else:
+        aux = random.choice([1, 0])
+        if aux == 1:
+            if p5_RC0.sigma_cr == "common identity":
+                p5.pay_2 = p3_PC0.xc_cd
+                p3.pay_1 = C.ENDOWMENT - p3_PC0.xc_cd
+                p2.pay_2 = 0
+            else:
+                p5.pay_2 = p2_PC0.xc_dc
+                p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_dc
+                p3.pay_1 = 0
+        else:
+            if p5_RC0.sigma_cr == "common identity":
+                p5.pay_2 = p2_PC0.xc_cd
+                p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_cd
+                p3.pay_1 = 0
+            else:
+                p5.pay_2 = p3_PC0.xc_dc
+                p3.pay_1 = C.ENDOWMENT - p3_PC0.xc_dc
+                p2.pay_2 = 0
+
+    if common_id_C1_3 == 0 and common_id_DR_C11 == 0:
+        aux = random.choice([1, 0])
+        if aux == 1:
+            p4.pay_2 = p1_PC1.xc_dd
+            p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_dd
+            p3.pay_2 = C.ENDOWMENT
+        else:
+            p4.pay_2 = p3_PC1.xc_dd
+            p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_dd
+            p1.pay_2 = C.ENDOWMENT
+    elif common_id_C1_3 == 2 and common_id_DR_C11 == 2:
+        aux = random.choice([1, 0])
+        if aux == 1:
+            p4.pay_2 = p1_PC1.xc_cc
+            p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_cc
+            p3.pay_2 = C.ENDOWMENT
+        else:
+            p4.pay_2 = p3_PC1.xc_cc
+            p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_cc
+            p1.pay_2 = C.ENDOWMENT
+    elif common_id_C1_3 == 0 and (common_id_DR_C11 == 2 or common_id_DR_C11 == 1):
+        if p4_RC1.sigma_cr == "common identity":
+            p4.pay_2 = p1_PC1.xc_cd
+            p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_cd
+            p3.pay_2 = C.ENDOWMENT
+        else:
+            p4.pay_2 = p3_PC1.xc_dc
+            p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_dc
+            p1.pay_2 = C.ENDOWMENT
+    elif (common_id_C1_3 == 2 or common_id_C1_3 == 1) and common_id_DR_C11 == 0:
+        if p4_RC1.sigma_cr == "common identity":
+            p4.pay_2 = p3_PC1.xc_cd
+            p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_cd
+            p1.pay_2 = C.ENDOWMENT
+        else:
+            p4.pay_2 = p1_PC1.xc_dc
+            p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_dc
+            p3.pay_2 = C.ENDOWMENT
+    else:
+        aux = random.choice([1, 0])
+        if aux == 1:
+            if p4_RC1.sigma_cr == "common identity":
+                p4.pay_2 = p3_PC1.xc_cd
+                p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_cd
+                p1.pay_2 = C.ENDOWMENT
+            else:
+                p4.pay_2 = p1_PC1.xc_dc
+                p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_dc
+                p3.pay_2 = C.ENDOWMENT
+        else:
+            if p4_RC1.sigma_cr == "common identity":
+                p4.pay_2 = p1_PC1.xc_cd
+                p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_cd
+                p3.pay_2 = C.ENDOWMENT
+            else:
+                p4.pay_2 = p3_PC1.xc_dc
+                p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_dc
+                p1.pay_2 = C.ENDOWMENT
+
+    # p1.payoff = group.kept
+    # p2.payoff = C.ENDOWMENT - group.kept
+
+def get_common_identities(player1: Player, player2: Player):
+    condition_1 = player1.participant.color == player2.participant.color
+    condition_2 = player1.participant.painter == player2.participant.painter
+    if condition_1 and condition_2:
+        return 2
+    elif condition_1 or condition_2:
+        return 1
+    else:
+        return 0
 
 def change_coin_flip(player: Player):
     if player.participant.coin_flip == "Heads":
@@ -219,6 +421,44 @@ def set_game_roles(player: Player):
         player.game_role = "R(C0)"
 
 
+def get_instructions_template(player: Player):
+    coin = player.participant.coin_flip  # Assuming the coin value is stored in the player's model
+    player_id = player.id_in_group
+
+    if player_id == 1:
+        return "instructions_DR.html" if coin == "Heads" else "instructions_C1.html"
+    elif player_id == 2:
+        return "instructions_DD.html" if coin == "Heads" else "instructions_C0.html"
+    elif player_id == 3:
+        return "instructions_C0.html" if coin == "Heads" else "instructions_C1.html"
+    elif player_id == 4:
+        return "instructions_C1.html" if coin == "Heads" else "instructions_DR.html"
+    elif player_id == 5:
+        return "instructions_DD.html" if coin == "Heads" else "instructions_C0.html"
+    else:
+        return ""
+
+
+def get_instructions_template2(player: Player):
+    coin = (
+        player.participant.coin_flip
+    )  # Assuming the coin value is stored in the player's model
+    player_id = player.id_in_group
+
+    if player_id == 1:
+        return "instructions_C1.html" if coin == "Heads" else "instructions_DR.html"
+    elif player_id == 2:
+        return "instructions_C0.html" if coin == "Heads" else "instructions_DD.html"
+    elif player_id == 3:
+        return "instructions_C1.html" if coin == "Heads" else "instructions_C0.html"
+    elif player_id == 4:
+        return "instructions_DR.html" if coin == "Heads" else "instructions_C1.html"
+    elif player_id == 5:
+        return "instructions_C0.html" if coin == "Heads" else "instructions_DD.html"
+    else:
+        return ""
+
+
 ####################################################################################################
 
 # PAGES
@@ -229,6 +469,8 @@ class Introduction(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
+            "instructions_template_2": get_instructions_template2(player),
         }
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
@@ -256,6 +498,7 @@ class D_DR(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class P_C1_C0_1(Page):
@@ -282,6 +525,7 @@ class P_C1_C0_1(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class P_C1_C0_2(Page):
@@ -308,6 +552,7 @@ class P_C1_C0_2(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class P_C1_C0_3(Page):
@@ -334,6 +579,7 @@ class P_C1_C0_3(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -361,6 +607,7 @@ class P_C1_C0_4(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -387,6 +634,7 @@ class Robust(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -410,6 +658,7 @@ class D_DD_1(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -433,6 +682,7 @@ class D_DD_2(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class D_DD_3(Page):
@@ -455,6 +705,7 @@ class D_DD_3(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -478,6 +729,7 @@ class D_DD_4(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class R_C1_C0_1(Page):
@@ -502,6 +754,7 @@ class R_C1_C0_1(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 class R_C1_C0_2(Page):
@@ -526,6 +779,7 @@ class R_C1_C0_2(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -551,6 +805,7 @@ class R_C1_C0_3(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -576,6 +831,7 @@ class R_DR_DD(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
@@ -599,31 +855,32 @@ class R_DR_2(Page):
             "your_color": player.participant.color,
             "your_painter": player.participant.painter,
             "coin": player.participant.coin_flip,
+            "instructions_template": get_instructions_template(player),
         }
 
 
-class Offer(Page):
-    form_model = 'group'
-    form_fields = ['kept']
-
+class ResultsWaitPage(WaitPage):
+    after_all_players_arrive = "set_payoffs"
     @staticmethod
     def is_displayed(player: Player):
-        return player.id_in_group == 1
-
-# class ChangeCoinFlip(WaitPage):
-#     change_coin_flip
-
-
-class ResultsWaitPage(WaitPage):
-    after_all_players_arrive = set_payoffs
+        return player.round_number == C.NUM_ROUNDS
 
 
 class Results(Page):
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == C.NUM_ROUNDS
+
     @staticmethod
     def vars_for_template(player: Player):
-        group = player.group
-
-        return dict(offer=C.ENDOWMENT - group.kept)
+        return {
+            "your_color": player.participant.color,
+            "your_painter": player.participant.painter,
+            "coin": player.participant.coin_flip,
+            "pay_1": player.pay_1,
+            "pay_2": player.pay_2,
+        }
 
 
 page_sequence = [
@@ -643,4 +900,6 @@ page_sequence = [
     R_DR_DD,
     R_DR_2,
     Robust,
+    ResultsWaitPage,
+    Results,
 ]
