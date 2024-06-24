@@ -23,12 +23,13 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
-    kept = models.CurrencyField(
-        doc="""Amount dictator decided to keep for himself""",
-        min=0,
-        max=C.ENDOWMENT,
-        label="I will keep",
-    )
+    pass
+    # kept = models.CurrencyField(
+    #     doc="""Amount dictator decided to keep for himself""",
+    #     min=0,
+    #     max=C.ENDOWMENT,
+    #     label="I will keep",
+    # )
 
 
 class Player(BasePlayer):
@@ -259,7 +260,9 @@ def set_payoffs(group: Group):
             p5.pay_1 = p2_DDD.x_dd_cdd
             p2.pay_1 = C.ENDOWMENT - p2_DDD.x_dd_cdd
 
-    if common_id_C0_3 == 0 and common_id_DD_C02 == 0:
+    if (common_id_C0_3 == 0 and common_id_DD_C02 == 0) or (
+        common_id_C0_3 == 0 and common_id_DD_C02 == 1 and p2_PC0.mu_d == "different identity") or (
+        common_id_C0_3 == 1 and common_id_DD_C02 == 0 and p3_PC0.mu_d == "different identity"):
         aux = random.choice([1,0])
         if aux == 1:
             p5.pay_2 = p3_PC0.xc_dd
@@ -269,7 +272,9 @@ def set_payoffs(group: Group):
             p5.pay_2 = p2_PC0.xc_dd
             p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_dd
             p3.pay_1 = 0
-    elif common_id_C0_3 == 2 and common_id_DD_C02 == 2:
+    elif (common_id_C0_3 == 2 and common_id_DD_C02 == 2) or (
+        common_id_C0_3 == 1 and common_id_DD_C02 == 2 and p3_PC0.mu_c == "common identity") or (
+        common_id_C0_3 == 2 and common_id_DD_C02 == 1 and p2_PC0.mu_c == "common identity"):
         aux = random.choice([1, 0])
         if aux == 1:
             p5.pay_2 = p3_PC0.xc_cc
@@ -279,7 +284,13 @@ def set_payoffs(group: Group):
             p5.pay_2 = p2_PC0.xc_cc
             p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_cc
             p3.pay_1 = 0
-    elif common_id_C0_3 == 0 and (common_id_DD_C02 == 2 or common_id_DD_C02 == 1):
+    elif (
+        common_id_C0_3 == 0
+        or (common_id_C0_3 == 1 and p3_PC0.mu_c == "different identity")
+    ) and (
+        common_id_DD_C02 == 2
+        or (common_id_DD_C02 == 1 and p2_PC0.mu_d == "common identity")
+    ):
         if p5_RC0.sigma_cr == "common identity":
             p5.pay_2 = p2_PC0.xc_cd
             p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_cd
@@ -288,7 +299,12 @@ def set_payoffs(group: Group):
             p5.pay_2 = p3_PC0.xc_dc
             p3.pay_1 = C.ENDOWMENT - p3_PC0.xc_dc
             p2.pay_2 = 0
-    elif (common_id_C0_3 == 2 or common_id_C0_3 == 1) and common_id_DD_C02 == 0:
+    elif (
+        common_id_DD_C02 == 0
+        or (common_id_DD_C02 == 1 and p2_PC0.mu_c == "different identity")
+    ) and (
+        common_id_C0_3 == 2 
+        or (common_id_C0_3 == 1 and p3_PC0.mu_d == "common identity")):
         if p5_RC0.sigma_cr == "common identity":
             p5.pay_2 = p3_PC0.xc_cd
             p3.pay_1 = C.ENDOWMENT - p3_PC0.xc_cd
@@ -297,29 +313,11 @@ def set_payoffs(group: Group):
             p5.pay_2 = p2_PC0.xc_dc
             p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_dc
             p3.pay_1 = 0
-    else:
-        aux = random.choice([1, 0])
-        if aux == 1:
-            if p5_RC0.sigma_cr == "common identity":
-                p5.pay_2 = p3_PC0.xc_cd
-                p3.pay_1 = C.ENDOWMENT - p3_PC0.xc_cd
-                p2.pay_2 = 0
-            else:
-                p5.pay_2 = p2_PC0.xc_dc
-                p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_dc
-                p3.pay_1 = 0
-        else:
-            if p5_RC0.sigma_cr == "common identity":
-                p5.pay_2 = p2_PC0.xc_cd
-                p2.pay_2 = C.ENDOWMENT - p2_PC0.xc_cd
-                p3.pay_1 = 0
-            else:
-                p5.pay_2 = p3_PC0.xc_dc
-                p3.pay_1 = C.ENDOWMENT - p3_PC0.xc_dc
-                p2.pay_2 = 0
 
-    if common_id_C1_3 == 0 and common_id_DR_C11 == 0:
-        aux = random.choice([1, 0])
+    if (common_id_C1_3 == 0 and common_id_DR_C11 == 0) or (
+        common_id_C1_3 == 0 and common_id_DR_C11 == 1 and p1_PC1.mu_d == "different identity") or (
+        common_id_C1_3 == 1 and common_id_DR_C11 == 0 and p3_PC1.mu_d == "different identity"):
+        aux = random.choice([1,0])
         if aux == 1:
             p4.pay_2 = p1_PC1.xc_dd
             p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_dd
@@ -328,7 +326,9 @@ def set_payoffs(group: Group):
             p4.pay_2 = p3_PC1.xc_dd
             p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_dd
             p1.pay_2 = C.ENDOWMENT
-    elif common_id_C1_3 == 2 and common_id_DR_C11 == 2:
+    elif (common_id_C1_3 == 2 and common_id_DR_C11 == 2) or (
+        common_id_C1_3 == 1 and common_id_DR_C11 == 2 and p3_PC1.mu_c == "common identity") or (
+        common_id_C1_3 == 2 and common_id_DR_C11 == 1 and p1_PC1.mu_c == "common identity"):
         aux = random.choice([1, 0])
         if aux == 1:
             p4.pay_2 = p1_PC1.xc_cc
@@ -338,7 +338,13 @@ def set_payoffs(group: Group):
             p4.pay_2 = p3_PC1.xc_cc
             p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_cc
             p1.pay_2 = C.ENDOWMENT
-    elif common_id_C1_3 == 0 and (common_id_DR_C11 == 2 or common_id_DR_C11 == 1):
+    elif (
+        common_id_C1_3 == 0
+        or (common_id_C1_3 == 1 and p3_PC1.mu_c == "different identity")
+    ) and (
+        common_id_DR_C11 == 2
+        or (common_id_DR_C11 == 1 and p1_PC1.mu_d == "common identity")
+    ):
         if p4_RC1.sigma_cr == "common identity":
             p4.pay_2 = p1_PC1.xc_cd
             p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_cd
@@ -347,7 +353,12 @@ def set_payoffs(group: Group):
             p4.pay_2 = p3_PC1.xc_dc
             p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_dc
             p1.pay_2 = C.ENDOWMENT
-    elif (common_id_C1_3 == 2 or common_id_C1_3 == 1) and common_id_DR_C11 == 0:
+    elif (
+        common_id_DR_C11 == 0
+        or (common_id_DR_C11 == 1 and p1_PC1.mu_c == "different identity")
+    ) and (
+        common_id_C1_3 == 2 
+        or (common_id_C1_3 == 1 and p3_PC1.mu_d == "common identity")):
         if p4_RC1.sigma_cr == "common identity":
             p4.pay_2 = p3_PC1.xc_cd
             p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_cd
@@ -356,30 +367,15 @@ def set_payoffs(group: Group):
             p4.pay_2 = p1_PC1.xc_dc
             p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_dc
             p3.pay_2 = C.ENDOWMENT
-    else:
-        aux = random.choice([1, 0])
-        if aux == 1:
-            if p4_RC1.sigma_cr == "common identity":
-                p4.pay_2 = p3_PC1.xc_cd
-                p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_cd
-                p1.pay_2 = C.ENDOWMENT
-            else:
-                p4.pay_2 = p1_PC1.xc_dc
-                p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_dc
-                p3.pay_2 = C.ENDOWMENT
-        else:
-            if p4_RC1.sigma_cr == "common identity":
-                p4.pay_2 = p1_PC1.xc_cd
-                p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_cd
-                p3.pay_2 = C.ENDOWMENT
-            else:
-                p4.pay_2 = p3_PC1.xc_dc
-                p3.pay_2 = C.ENDOWMENT - p3_PC1.xc_dc
-                p1.pay_2 = C.ENDOWMENT
-
-    # p1.payoff = group.kept
-    # p2.payoff = C.ENDOWMENT - group.kept
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
 def get_common_identities(player1: Player, player2: Player):
     condition_1 = player1.participant.color == player2.participant.color
     condition_2 = player1.participant.painter == player2.participant.painter
