@@ -5,9 +5,11 @@
         Please answer the following questions.
     </p>
 
+        {{ include_sibling 'instructions.html' }}
+
     {{event}}
     {{n_regimen}}
-    
+
     {{ formfields }}
 
     {{ next_button }}
