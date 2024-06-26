@@ -11,7 +11,7 @@ class C(BaseConstants):
     # Load EVENTS from CSV file
     EVENTS = []
     # Define file path for events.csv
-    file_path = "../data/events_filtered.csv"
+    file_path = "./data/events_filtered.csv"
     # Read the CSV file
     with open(file_path, "r") as f:
         reader = csv.reader(f)

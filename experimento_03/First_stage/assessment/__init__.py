@@ -15,7 +15,7 @@ class C(BaseConstants):
     EVENTS = []
     # Define file path for events.csv
     print("Current working directory:", os.getcwd())
-    file_path = "../data/events.csv"
+    file_path = "./data/events.csv"
     # Read the CSV file
     with open(file_path, "r") as f:
         reader = csv.reader(f)
@@ -27,7 +27,7 @@ class C(BaseConstants):
     # Load questions from JSON file
     QUESTIONS = []
     # Define file path for questions.json
-    file_path = "../data/events.json"
+    file_path = "./data/events.json"
     # Read the JSON file
     with open(file_path, "r") as f:
         QUESTIONS = json.load(f)
@@ -145,7 +145,7 @@ def set_matrix(group: Group):
         avg_questions[9:12],
     ]
     # Define the file path for CSV
-    file_path = "../data/assessment.csv"
+    file_path = "./data/assessment.csv"
     # Save the matrix to a CSV file
     with open(file_path, "w", newline="") as f:
         writer = csv.writer(f)
