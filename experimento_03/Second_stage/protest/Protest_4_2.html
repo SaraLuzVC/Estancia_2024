@@ -1,0 +1,17 @@
+{{ block title }}Survey{{ endblock }}
+{{ block content }}
+
+    <p>
+        Please answer the following questions.
+    </p>
+
+        {{ include_sibling 'instructions.html' }}
+
+    {{event}}
+
+
+    {{ formfields }}
+
+    {{ next_button }}
+
+{{ endblock }}
