@@ -22,7 +22,14 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = ['event']
+PARTICIPANT_FIELDS = [
+    "task_rounds",
+    "regimen_1", 'you_think_1', 'they_think_1', 'ranking_1', 'average_1',
+    "regimen_2", 'you_think_2', 'they_think_2', 'ranking_2', 'average_2',
+    "regimen_3", 'you_think_3', 'they_think_3', 'ranking_3', 'average_3',
+    "regimen_4", 'you_think_4', 'they_think_4', 'ranking_4', 'average_4',
+    "regimen_5", 'you_think_5', 'they_think_5', 'ranking_5', 'average_5'
+]
 SESSION_FIELDS = []
 
 # ISO-639 code

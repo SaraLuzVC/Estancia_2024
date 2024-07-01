@@ -1,0 +1,6 @@
+{{ block title }}Pregunta {{player.round_number}} de 12 {{ endblock }}
+{{ block content }}
+    {{ include_sibling 'instructions.html' }}
+        {{ formfields }}
+    {{ next_button }}
+{{ endblock }}

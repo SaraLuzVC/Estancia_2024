@@ -5,13 +5,13 @@ import random
 class C(BaseConstants):
     NAME_IN_URL = 'protest'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 1
-    N_REGIMES = 4
+    N_REGIMES = 5
+    NUM_ROUNDS = N_REGIMES
 
     # Load EVENTS from CSV file
     EVENTS = []
     # Define file path for events.csv
-    file_path = "./data/events_filtered.csv"
+    file_path = "./data/regimen_tags.csv"
     # Read the CSV file
     with open(file_path, "r") as f:
         reader = csv.reader(f)
@@ -19,6 +19,18 @@ class C(BaseConstants):
             EVENTS.extend(row)  # Extend to flatten the list
     # Convert EVENTS to a list (if needed)
     EVENTS = list(EVENTS)
+
+    # Load questions from JSON file
+    QUESTIONS = []
+    # Define file path for events.csv
+    file_path = "./data/events_filtered.csv"
+    # Read the CSV file
+    with open(file_path, "r") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            QUESTIONS.extend(row)  # Extend to flatten the list
+    # Convert EVENTS to a list (if needed)
+    QUESTIONS = list(QUESTIONS)
 
 
 class Subsession(BaseSubsession):
@@ -58,38 +70,289 @@ class Player(BasePlayer):
 # FUNCTIONS
 def creating_session(subsession: Subsession):
     if subsession.round_number == 1:
-        events_count = len(C.EVENTS)
-        print(events_count)
         for p in subsession.get_players():
-            # Assign a random event index to each player
-            event_index = random.randint(0, events_count - 1)
-            print(event_index)
-            p.participant.vars["event"] = C.EVENTS[event_index]
-            print(p.participant.vars["event"])
+            round_numbers = list(range(1, C.NUM_ROUNDS + 1))
+            random.shuffle(round_numbers)
+            task_rounds = dict(zip(C.EVENTS, round_numbers))
+            p.participant.vars["task_rounds"] = task_rounds
+
+
+def set_payoffs(group: Group):
+    """-θg(a)-ca_i"""
+    cost_of_protest = 1
+    thetas = [2, 1, 0, -1, -2]
+
+    # Collect votes for each regimen
+    votes = [[] for _ in range(5)]
+    for p in group.get_players():
+        votes[0].append(p.participant.regimen_1)
+        votes[1].append(p.participant.regimen_2)
+        votes[2].append(p.participant.regimen_3)
+        votes[3].append(p.participant.regimen_4)
+        votes[4].append(p.participant.regimen_5)
+
+    # Determine majorities for each regimen
+    majorities = [1 if sum(vote) > len(vote) / 2 else 0 for vote in votes]
+
+    # Calculate payoffs for each player
+    for p in group.get_players():
+        payoff = sum(
+            thetas[i] * majorities[i] - cost_of_protest * int(regimen)
+            for i, regimen in enumerate(
+                [
+                    p.participant.regimen_1,
+                    p.participant.regimen_2,
+                    p.participant.regimen_3,
+                    p.participant.regimen_4,
+                    p.participant.regimen_5,
+                ]
+            )
+        )
+        p.payoff = payoff
+
 
 # PAGES
-class Protest_1(Page):
+class Protest_1_1(Page):
     form_model = 'player'
     form_fields = ['you_think', 'they_think', 'ranking', 'average']
-    
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regimen1", -1)
+
     @staticmethod
     def vars_for_template(player: Player):
         return {
             "n_regimen": C.N_REGIMES,
-            "event": player.participant.event,
+            "event": C.QUESTIONS[0],
         }
 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars["you_think_1"] = player.you_think
+        player.participant.vars["they_think_1"] = player.they_think
+        player.participant.vars["ranking_1"] = player.ranking
+        player.participant.vars["average_1"] = player.average
 
-class Protest_2(Page):
+
+class Protest_1_2(Page):
     form_model = 'player'
     form_fields = ['protest']
 
     @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regimen1", -1)
+
+    @staticmethod
     def vars_for_template(player: Player):
         return {
             "n_regimen": C.N_REGIMES,
-            "event": player.participant.event,
+            "event": C.QUESTIONS[0],
         }
 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars["regimen_1"] = player.protest
 
-page_sequence = [Protest_1, Protest_2]
+
+class Protest_2_1(Page):
+    form_model = "player"
+    form_fields = ["you_think", "they_think", "ranking", "average"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regimen2", -1)
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "n_regimen": C.N_REGIMES,
+            "event": C.QUESTIONS[1],
+        }
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars["you_think_2"] = player.you_think
+        player.participant.vars["they_think_2"] = player.they_think
+        player.participant.vars["ranking_2"] = player.ranking
+        player.participant.vars["average_2"] = player.average
+
+
+class Protest_2_2(Page):
+    form_model = "player"
+    form_fields = ["protest"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regimen2", -1)
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "n_regimen": C.N_REGIMES,
+            "event": C.QUESTIONS[1],
+        }
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars["regimen_2"] = player.protest
+
+
+class Protest_3_1(Page):
+    form_model = "player"
+    form_fields = ["you_think", "they_think", "ranking", "average"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regimen3", -1)
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "n_regimen": C.N_REGIMES,
+            "event": C.QUESTIONS[2],
+        }
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars["you_think_3"] = player.you_think
+        player.participant.vars["they_think_3"] = player.they_think
+        player.participant.vars["ranking_3"] = player.ranking
+        player.participant.vars["average_3"] = player.average
+
+
+class Protest_3_2(Page):
+    form_model = "player"
+    form_fields = ["protest"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regimen3", -1)
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "n_regimen": C.N_REGIMES,
+            "event": C.QUESTIONS[2],
+        }
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars["regimen_3"] = player.protest
+
+
+class Protest_4_1(Page):
+    form_model = "player"
+    form_fields = ["you_think", "they_think", "ranking", "average"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regimen4", -1)
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "n_regimen": C.N_REGIMES,
+            "event": C.QUESTIONS[3],
+        }
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars["you_think_4"] = player.you_think
+        player.participant.vars["they_think_4"] = player.they_think
+        player.participant.vars["ranking_4"] = player.ranking
+        player.participant.vars["average_4"] = player.average
+
+
+class Protest_4_2(Page):
+    form_model = "player"
+    form_fields = ["protest"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regimen4", -1)
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "n_regimen": C.N_REGIMES,
+            "event": C.QUESTIONS[3],
+        }
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars["regimen_4"] = player.protest
+
+
+class Protest_5_1(Page):
+    form_model = "player"
+    form_fields = ["you_think", "they_think", "ranking", "average"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regimen5", -1)
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "n_regimen": C.N_REGIMES,
+            "event": C.QUESTIONS[4],
+        }
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars["you_think_5"] = player.you_think
+        player.participant.vars["they_think_5"] = player.they_think
+        player.participant.vars["ranking_5"] = player.ranking
+        player.participant.vars["average_5"] = player.average
+
+
+class Protest_5_2(Page):
+    form_model = "player"
+    form_fields = ["protest"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regimen5", -1)
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            "n_regimen": C.N_REGIMES,
+            "event": C.QUESTIONS[4],
+        }
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.vars["regimen_5"] = player.protest
+
+
+class CalculatePay(WaitPage):
+    after_all_players_arrive = set_payoffs
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == C.NUM_ROUNDS
+
+
+page_sequence = [Protest_1_1, Protest_1_2, Protest_2_1, Protest_2_2, Protest_3_1, Protest_3_2, Protest_4_1, Protest_4_2, Protest_5_1, Protest_5_2, CalculatePay]

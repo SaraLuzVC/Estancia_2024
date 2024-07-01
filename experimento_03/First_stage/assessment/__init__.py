@@ -7,7 +7,7 @@ import os
 class C(BaseConstants):
     NAME_IN_URL = 'assessment'
     PLAYERS_PER_GROUP = None
-    N_REGIMES = 4
+    N_REGIMES = 5
     M_EVENTS = 3
     NUM_ROUNDS = N_REGIMES * M_EVENTS
 
@@ -50,6 +50,9 @@ class Group(BaseGroup):
     avg_question_10 = models.FloatField()
     avg_question_11 = models.FloatField()
     avg_question_12 = models.FloatField()
+    avg_question_13 = models.FloatField()
+    avg_question_14 = models.FloatField()
+    avg_question_15 = models.FloatField()
 
 
 class Player(BasePlayer):
@@ -101,7 +104,9 @@ class Player(BasePlayer):
         max=10, 
         min=1,
         label=C.QUESTIONS[3][2])
-
+    question_13 = models.IntegerField(max=10, min=1, label=C.QUESTIONS[4][0])
+    question_14 = models.IntegerField(max=10, min=1, label=C.QUESTIONS[4][1])
+    question_15 = models.IntegerField(max=10, min=1, label=C.QUESTIONS[4][2])
 
 # FUNCTIONS
 def creating_session(subsession: Subsession):
@@ -115,7 +120,7 @@ def creating_session(subsession: Subsession):
 
 def set_matrix(group: Group):
     # Initialize sums
-    num_questions = 12
+    num_questions = C.NUM_ROUNDS
     sum_questions = [0] * num_questions
 
     # Get the number of players in the group
@@ -143,6 +148,7 @@ def set_matrix(group: Group):
         avg_questions[3:6],
         avg_questions[6:9],
         avg_questions[9:12],
+        avg_questions[12:15],
     ]
     # Define the file path for CSV
     file_path = "./data/assessment.csv"
@@ -284,6 +290,40 @@ class P12(Page):
         return player.round_number == player.participant.vars.get(
             "task_rounds", {}
         ).get("Regime04_event03", -1)
+        
+
+class P13(Page):
+    form_model = "player"
+    form_fields = ["question_13"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regime05_event01", -1)
+        
+        
+class P14(Page):
+    form_model = "player"
+    form_fields = ["question_14"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regime05_event02", -1)
+        
+        
+class P15(Page):
+    form_model = "player"
+    form_fields = ["question_15"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == player.participant.vars.get(
+            "task_rounds", {}
+        ).get("Regime05_event03", -1)
+        
 
 class CalculateMatrix(WaitPage):
     after_all_players_arrive = set_matrix
@@ -292,4 +332,4 @@ class CalculateMatrix(WaitPage):
         return player.round_number == C.NUM_ROUNDS
 
 
-page_sequence = [P01, P02, P03, P04, P05, P06, P07, P08, P09, P10, P11, P12, CalculateMatrix]
+page_sequence = [P01, P02, P03, P04, P05, P06, P07, P08, P09, P10, P11, P12, P13, P14, P15, CalculateMatrix]
