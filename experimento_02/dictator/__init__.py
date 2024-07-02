@@ -224,8 +224,8 @@ def set_payoffs(group: Group):
         p5_RDD = group.get_player_by_id(5).in_round(1)
         p5_RC0 = group.get_player_by_id(5).in_round(2)
     else:
-        p5_RC0 = group.get_player_by_id(5).in_round(2)
-        p5_RDD = group.get_player_by_id(5).in_round(1)
+        p5_RDD = group.get_player_by_id(5).in_round(2)
+        p5_RC0 = group.get_player_by_id(5).in_round(1)
 
     common_id_DR_C11 = get_common_identities(p1, p4)
     common_id_DD_C02 = get_common_identities(p2, p5)
@@ -367,15 +367,8 @@ def set_payoffs(group: Group):
             p4.pay_2 = p1_PC1.xc_dc
             p1.pay_2 = C.ENDOWMENT - p1_PC1.xc_dc
             p3.pay_2 = C.ENDOWMENT
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
 def get_common_identities(player1: Player, player2: Player):
     condition_1 = player1.participant.color == player2.participant.color
     condition_2 = player1.participant.painter == player2.participant.painter
