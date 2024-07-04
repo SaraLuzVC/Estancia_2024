@@ -30,7 +30,7 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
-    total_contribution = models.CurrencyField()
+    total_share = models.CurrencyField()
     individual_share = models.CurrencyField()
 
 
@@ -51,9 +51,34 @@ class Player(BasePlayer):
     punish_p4 = make_punishment_field(4)
     cost_of_punishing = models.CurrencyField()
     punishment_received = models.CurrencyField()
+    number = models.IntegerField()
 
 
 # FUNCTIONS
+
+
+def creating_session(subsession: Subsession):
+    if subsession.round_number == 1:
+        # Randomly group participants at the start of the session
+        subsession.group_randomly()
+
+        # Initialize a counter for participant numbers
+        participant_number = 1
+
+        # Loop through all groups and assign participant numbers sequentially
+        for group in subsession.get_groups():
+            players = group.get_players()
+            for player in players:
+                player.participant.number = participant_number
+                participant_number += 1
+
+    # Randomly group participants in each round
+    subsession.group_randomly()
+    
+    for group in subsession.get_groups():
+        for player in group.get_players():
+            player.number = player.participant.number
+
 
 def get_self_field(player: Player):
     return "punish_p{}".format(player.id_in_group)
@@ -66,13 +91,10 @@ def punishment_fields(player: Player):
 def set_payoffs(group: Group):
     players = group.get_players()
     contributions = [p.contribution for p in players]
-    group.total_contribution = sum(contributions)
+    group.total_share = sum(contributions) 
+    group.individual_share = group.total_share * C.MULTIPLIER
 
-    group.individual_share = (
-        group.total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
-    )
-
-    if group.round_number <= C.FIRST_CHANGE_ROUND:
+    if group.round_number < C.FIRST_CHANGE_ROUND:
         for p in players:
             payoff_before_punishment = C.ENDOWMENT - p.contribution + group.individual_share
             self_field = get_self_field(p)
@@ -85,12 +107,36 @@ def set_payoffs(group: Group):
                 C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
             )
             p.payoff = (
-                payoff_before_punishment * (1 - p.punishment_received / 10)
+                payoff_before_punishment - p.punishment_received
                 - p.cost_of_punishing
             )
-    elif group.round_number <= C.SECOND_CHANGE_ROUND:
+            print(p.payoff)
+    elif group.round_number < C.SECOND_CHANGE_ROUND:
+        same_payoff = 0
+        different_payoff = 0
         for p in players:
-            if p.id_in_group % 5 != 1:
+            if p.participant.number % 5 == 1:
+                different_payoff += 1
+            else:
+                same_payoff += 1
+        for p in players:
+            if p.participant.number % 5 == 1:
+                payoff_before_punishment = C.ENDOWMENT - p.contribution + (group.total_share-p.contribution) * C.MULTIPLIER
+                self_field = get_self_field(p)
+                punishments_received = [
+                    getattr(other, self_field) for other in p.get_others_in_group()
+                ]
+                p.punishment_received = min(10, sum(punishments_received))
+                punishments_sent = [getattr(p, field) for field in punishment_fields(p)]
+                p.cost_of_punishing = sum(
+                    C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
+                )
+                p.payoff = (
+                    payoff_before_punishment - p.punishment_received 
+                    - p.cost_of_punishing
+                )
+                print(p.payoff, "round 1")
+            else:
                 payoff_before_punishment = (
                     C.ENDOWMENT - p.contribution + group.individual_share
                 )
@@ -104,16 +150,25 @@ def set_payoffs(group: Group):
                     C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
                 )
                 p.payoff = (
-                    payoff_before_punishment * (1 - p.punishment_received / 10)
+                    payoff_before_punishment - p.punishment_received 
                     - p.cost_of_punishing
                 )
+    elif group.round_number < C.THIRD_CHANGE_ROUND:
+        same_payoff = 0
+        different_payoff = 0
+        for p in players:
+            if p.participant.number % 5 == 1 or p.participant.number % 5 == 2:
+                different_payoff += 1
             else:
-                others = p.get_others_in_group()
-                others_contributions = [o.contribution for o in others]
-                total_others_contributions = sum(others_contributions)
+                same_payoff += 1
+        for p in players:
+            if p.participant.number % 5 == 1 or p.participant.number % 5 == 2:
                 payoff_before_punishment = (
-                    C.ENDOWMENT - p.contribution + total_others_contributions * C.MULTIPLIER / (C.PLAYERS_PER_GROUP - 1)
+                    C.ENDOWMENT
+                    - p.contribution
+                    + (group.total_share - p.contribution) * C.MULTIPLIER
                 )
+                self_field = get_self_field(p)
                 punishments_received = [
                     getattr(other, self_field) for other in p.get_others_in_group()
                 ]
@@ -123,12 +178,11 @@ def set_payoffs(group: Group):
                     C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
                 )
                 p.payoff = (
-                    payoff_before_punishment * (1 - p.punishment_received / 10)
+                    payoff_before_punishment - p.punishment_received
                     - p.cost_of_punishing
                 )
-    elif group.round_number <= C.THIRD_CHANGE_ROUND:
-        for p in players:
-            if (p.id_in_group % 5 != 1 or p.id_in_group % 5 != 2):
+                print(p.payoff, "round 2")
+            else:
                 payoff_before_punishment = (
                     C.ENDOWMENT - p.contribution + group.individual_share
                 )
@@ -142,16 +196,33 @@ def set_payoffs(group: Group):
                     C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
                 )
                 p.payoff = (
-                    payoff_before_punishment * (1 - p.punishment_received / 10)
+                    payoff_before_punishment - p.punishment_received
                     - p.cost_of_punishing
                 )
+    elif group.round_number < C.FOURTH_CHANGE_ROUND:
+        same_payoff = 0
+        different_payoff = 0
+        for p in players:
+            if (
+                p.participant.number % 5 == 1
+                or p.participant.number % 5 == 2
+                or p.participant.number % 5 == 3
+            ):
+                different_payoff += 1
             else:
-                others = p.get_others_in_group()
-                others_contributions = [o.contribution for o in others]
-                total_others_contributions = sum(others_contributions)
+                same_payoff += 1
+        for p in players:
+            if (
+                p.participant.number % 5 == 1
+                or p.participant.number % 5 == 2
+                or p.participant.number % 5 == 3
+            ):
                 payoff_before_punishment = (
-                    C.ENDOWMENT - p.contribution + total_others_contributions * C.MULTIPLIER / (C.PLAYERS_PER_GROUP - 1)
+                    C.ENDOWMENT
+                    - p.contribution
+                    + (group.total_share - p.contribution) * C.MULTIPLIER
                 )
+                self_field = get_self_field(p)
                 punishments_received = [
                     getattr(other, self_field) for other in p.get_others_in_group()
                 ]
@@ -161,12 +232,10 @@ def set_payoffs(group: Group):
                     C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
                 )
                 p.payoff = (
-                    payoff_before_punishment * (1 - p.punishment_received / 10)
+                    payoff_before_punishment - p.punishment_received 
                     - p.cost_of_punishing
                 )
-    elif group.round_number <= C.FOURTH_CHANGE_ROUND:
-        for p in players:
-            if (p.id_in_group % 5 != 1 or p.id_in_group % 5 != 2 or p.id_in_group % 5 != 3):
+            else:
                 payoff_before_punishment = (
                     C.ENDOWMENT - p.contribution + group.individual_share
                 )
@@ -180,16 +249,35 @@ def set_payoffs(group: Group):
                     C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
                 )
                 p.payoff = (
-                    payoff_before_punishment * (1 - p.punishment_received / 10)
+                    payoff_before_punishment - p.punishment_received 
                     - p.cost_of_punishing
                 )
+    elif group.round_number < C.FIFTH_CHANGE_ROUND:
+        same_payoff = 0
+        different_payoff = 0
+        for p in players:
+            if (
+                p.participant.number % 5 == 1
+                or p.participant.number % 5 == 2
+                or p.participant.number % 5 == 3
+                or p.participant.number % 5 == 4
+            ):
+                different_payoff += 1
             else:
-                others = p.get_others_in_group()
-                others_contributions = [o.contribution for o in others]
-                total_others_contributions = sum(others_contributions)
+                same_payoff += 1
+        for p in players:
+            if (
+                p.participant.number % 5 == 1
+                or p.participant.number % 5 == 2
+                or p.participant.number % 5 == 3
+                or p.participant.number % 5 == 4
+            ):
                 payoff_before_punishment = (
-                    C.ENDOWMENT - p.contribution + total_others_contributions * C.MULTIPLIER / (C.PLAYERS_PER_GROUP - 1)
+                    C.ENDOWMENT
+                    - p.contribution
+                    + (group.total_share - p.contribution) * C.MULTIPLIER
                 )
+                self_field = get_self_field(p)
                 punishments_received = [
                     getattr(other, self_field) for other in p.get_others_in_group()
                 ]
@@ -199,12 +287,10 @@ def set_payoffs(group: Group):
                     C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
                 )
                 p.payoff = (
-                    payoff_before_punishment * (1 - p.punishment_received / 10)
+                    payoff_before_punishment - p.punishment_received 
                     - p.cost_of_punishing
                 )
-    elif group.round_number <= C.FIFTH_CHANGE_ROUND:
-        for p in players:
-            if (p.id_in_group % 5 != 1 or p.id_in_group % 5 != 2 or p.id_in_group % 5 != 3 or p.id_in_group % 5 != 4):
+            else:
                 payoff_before_punishment = (
                     C.ENDOWMENT - p.contribution + group.individual_share
                 )
@@ -218,49 +304,66 @@ def set_payoffs(group: Group):
                     C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
                 )
                 p.payoff = (
-                    payoff_before_punishment * (1 - p.punishment_received / 10)
-                    - p.cost_of_punishing
-                )
-            else:
-                others = p.get_others_in_group()
-                others_contributions = [o.contribution for o in others]
-                total_others_contributions = sum(others_contributions)
-                payoff_before_punishment = (
-                    C.ENDOWMENT - p.contribution + total_others_contributions * C.MULTIPLIER / (C.PLAYERS_PER_GROUP - 1)
-                )
-                punishments_received = [
-                    getattr(other, self_field) for other in p.get_others_in_group()
-                ]
-                p.punishment_received = min(10, sum(punishments_received))
-                punishments_sent = [getattr(p, field) for field in punishment_fields(p)]
-                p.cost_of_punishing = sum(
-                    C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
-                )
-                p.payoff = (
-                    payoff_before_punishment * (1 - p.punishment_received / 10)
+                    payoff_before_punishment - p.punishment_received 
                     - p.cost_of_punishing
                 )
     else:
+        same_payoff = 0
+        different_payoff = 0
         for p in players:
-            others = p.get_others_in_group()
-            others_contributions = [o.contribution for o in others]
-            total_others_contributions = sum(others_contributions)
-            payoff_before_punishment = (
-                C.ENDOWMENT - p.contribution + total_others_contributions * C.MULTIPLIER / (C.PLAYERS_PER_GROUP - 1)
-            )
-            self_field = get_self_field(p)
-            punishments_received = [
-                getattr(other, self_field) for other in p.get_others_in_group()
-            ]
-            p.punishment_received = min(10, sum(punishments_received))
-            punishments_sent = [getattr(p, field) for field in punishment_fields(p)]
-            p.cost_of_punishing = sum(
-                C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
-            )
-            p.payoff = (
-                payoff_before_punishment * (1 - p.punishment_received / 10)
-                - p.cost_of_punishing
-            )
+            if (
+                p.participant.number % 5 == 1
+                or p.participant.number % 5 == 2
+                or p.participant.number % 5 == 3
+                or p.participant.number % 5 == 4
+                or p.participant.number % 5 == 0
+            ):
+                different_payoff += 1
+            else:
+                same_payoff += 1
+        for p in players:
+            if (
+                p.participant.number % 5 == 1
+                or p.participant.number % 5 == 2
+                or p.participant.number % 5 == 3
+                or p.participant.number % 5 == 4
+                or p.participant.number % 5 == 0
+            ):
+                payoff_before_punishment = (
+                    C.ENDOWMENT
+                    - p.contribution
+                    + (group.total_share - p.contribution) * C.MULTIPLIER
+                )
+                self_field = get_self_field(p)
+                punishments_received = [
+                    getattr(other, self_field) for other in p.get_others_in_group()
+                ]
+                p.punishment_received = min(10, sum(punishments_received))
+                punishments_sent = [getattr(p, field) for field in punishment_fields(p)]
+                p.cost_of_punishing = sum(
+                    C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
+                )
+                p.payoff = (
+                    payoff_before_punishment - p.punishment_received 
+                    - p.cost_of_punishing
+                )
+            else:
+                payoff_before_punishment = (
+                    C.ENDOWMENT - p.contribution + group.individual_share
+                )
+                self_field = get_self_field(p)
+                punishments_received = [
+                    getattr(other, self_field) for other in p.get_others_in_group()
+                ]
+                p.punishment_received = min(10, sum(punishments_received))
+                punishments_sent = [getattr(p, field) for field in punishment_fields(p)]
+                p.cost_of_punishing = sum(
+                    C.PUNISHMENT_SCHEDULE[points] for points in punishments_sent
+                )
+                p.payoff = (
+                    payoff_before_punishment - p.punishment_received 
+                    - p.cost_of_punishing
+                )
 
 
 # PAGES
@@ -280,11 +383,26 @@ class Change_Payoff(Page):
     @staticmethod
     def is_displayed(player: Player):
         condition = (
-            (player.round_number == C.FIRST_CHANGE_ROUND and player.id_in_group % 5 == 1) or 
-            (player.round_number == C.SECOND_CHANGE_ROUND and player.id_in_group % 5 == 2) or 
-            (player.round_number == C.THIRD_CHANGE_ROUND and player.id_in_group % 5 == 3) or 
-            (player.round_number == C.FOURTH_CHANGE_ROUND and player.id_in_group % 5 == 4) or 
-            (player.round_number == C.FIFTH_CHANGE_ROUND and player.id_in_group % 5 == 0)
+            (
+                player.round_number == C.FIRST_CHANGE_ROUND
+                and player.participant.number % 5 == 1
+            )
+            or (
+                player.round_number == C.SECOND_CHANGE_ROUND
+                and player.participant.number % 5 == 2
+            )
+            or (
+                player.round_number == C.THIRD_CHANGE_ROUND
+                and player.participant.number % 5 == 3
+            )
+            or (
+                player.round_number == C.FOURTH_CHANGE_ROUND
+                and player.participant.number % 5 == 4
+            )
+            or (
+                player.round_number == C.FIFTH_CHANGE_ROUND
+                and player.participant.number % 5 == 0
+            )
         )
         return condition
 

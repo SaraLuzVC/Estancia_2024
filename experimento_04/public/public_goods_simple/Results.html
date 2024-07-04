@@ -1,14 +1,34 @@
 {{ block title }}Results{{ endblock }}
 {{ block content }}
 
-    <p>
-        You started with an endowment of {{ C.ENDOWMENT }},
-        of which you contributed {{ player.contribution }}.
-        Your group contributed {{ group.total_contribution }},
-        resulting in an individual share of {{ group.individual_share }}.
-        Your profit is therefore {{ player.payoff }}.
-    </p>
+<table class="table">
+    <tr>
+        <th>Your contribution</th>
+        <td>{{ player.contribution }}</td>
+    </tr>
+    <tr>
+        <th>Group total contribution</th>
+        <td>{{ group.total_share }}</td>
+    </tr>
+    <tr>
+        <th>Group individual share</th>
+        <td>{{ group.individual_share }}</td>
+    </tr>
+    <tr>
+        <th>Punishment received</th>
+        <td>{{ player.punishment_received }}</td>
+    </tr>
+    <tr>
+        <th>Self cost of punishment</th>
+        <td>{{ player.cost_of_punishing }}</td>
+    </tr>
+    <tr>
+        <th>Your payoff</th>
+        <td>{{ player.payoff }}</td>
+    </tr>
+</table>
 
-    {{ next_button }}
+{{ next_button}}
 
 {{ endblock }}
+

@@ -8,7 +8,7 @@ SESSION_CONFIGS = [
     # ),
     dict(
         name='public_goods_simple',
-        app_sequence=['public_goods_simple'],
+        app_sequence=['public_goods_simple', 'payment_info'],
         num_demo_participants=8,
     ),
 ]
@@ -22,7 +22,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = []
+PARTICIPANT_FIELDS = ["number"]
 SESSION_FIELDS = []
 
 # ISO-639 code

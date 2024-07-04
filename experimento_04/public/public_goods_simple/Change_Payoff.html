@@ -1,0 +1,74 @@
+{{ block title }}Change in payoff{{ endblock }}
+{{ block content }}
+
+    {{ include_sibling 'instructions_new_payoff.html' }}
+
+<p> You are player {{player.id_in_group}}</p>
+
+<table class="table">
+
+    <tr>
+        <td>Player 1</td>
+        <td>
+            {{ if condition_P1 }}
+        <p>
+            pay off has changed
+        </p>
+            {{ else}}
+        <p>
+            no change in payoff
+            {{ endif }}
+        </p>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Player 2</td>
+        <td>
+            {{ if condition_P2 }}
+        <p>
+            pay off has changed
+        </p>
+            {{ else}}
+        <p>
+            no change in payoff
+            {{ endif }}
+        </p>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Player 3</td>
+        <td>
+            {{ if condition_P3 }}
+        <p>
+            pay off has changed
+        </p>
+            {{ else}}
+        <p>
+            no change in payoff
+            {{ endif }}
+        </p>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Player 4</td>
+        <td>
+            {{ if condition_P4 }}
+        <p>
+            pay off has changed
+        </p>
+            {{ else}}
+        <p>
+            no change in payoff
+            {{ endif }}
+        </p>
+        </td>
+
+</table>
+
+
+    {{ next_button }}
+
+{{ endblock }}
