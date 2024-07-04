@@ -383,26 +383,27 @@ class Change_Payoff(Page):
     @staticmethod
     def is_displayed(player: Player):
         condition = (
-            (
-                player.round_number == C.FIRST_CHANGE_ROUND
-                # and player.participant.number % 5 == 1
-            )
-            or (
-                player.round_number == C.SECOND_CHANGE_ROUND
-                # and player.participant.number % 5 == 2
-            )
-            or (
-                player.round_number == C.THIRD_CHANGE_ROUND
-                # and player.participant.number % 5 == 3
-            )
-            or (
-                player.round_number == C.FOURTH_CHANGE_ROUND
-                # and player.participant.number % 5 == 4
-            )
-            or (
-                player.round_number == C.FIFTH_CHANGE_ROUND
-                # and player.participant.number % 5 == 0
-            )
+            player.round_number >= C.FIRST_CHANGE_ROUND
+            # (
+            #     player.round_number == C.FIRST_CHANGE_ROUND
+            #     # and player.participant.number % 5 == 1
+            # )
+            # or (
+            #     player.round_number == C.SECOND_CHANGE_ROUND
+            #     # and player.participant.number % 5 == 2
+            # )
+            # or (
+            #     player.round_number == C.THIRD_CHANGE_ROUND
+            #     # and player.participant.number % 5 == 3
+            # )
+            # or (
+            #     player.round_number == C.FOURTH_CHANGE_ROUND
+            #     # and player.participant.number % 5 == 4
+            # )
+            # or (
+            #     player.round_number == C.FIFTH_CHANGE_ROUND
+            #     # and player.participant.number % 5 == 0
+            # )
         )
         return condition
     @staticmethod
@@ -412,7 +413,7 @@ class Change_Payoff(Page):
         condition_P2 = group.get_player_by_id(2).participant.number % 5 == 1 and group.round_number >= C.FIRST_CHANGE_ROUND or group.get_player_by_id(2).participant.number % 5 == 2 and group.round_number >= C.SECOND_CHANGE_ROUND  or group.get_player_by_id(2).participant.number % 5 == 3 and group.round_number >= C.THIRD_CHANGE_ROUND or group.get_player_by_id(2).participant.number % 5 == 4 and group.round_number >= C.FOURTH_CHANGE_ROUND or group.get_player_by_id(2).participant.number % 5 == 0 and group.round_number >= C.FIFTH_CHANGE_ROUND
         condition_P3 = group.get_player_by_id(3).participant.number % 5 == 1 and group.round_number >= C.FIRST_CHANGE_ROUND or group.get_player_by_id(3).participant.number % 5 == 2 and group.round_number >= C.SECOND_CHANGE_ROUND  or group.get_player_by_id(3).participant.number % 5 == 3 and group.round_number >= C.THIRD_CHANGE_ROUND or group.get_player_by_id(3).participant.number % 5 == 4 and group.round_number >= C.FOURTH_CHANGE_ROUND or group.get_player_by_id(3).participant.number % 5 == 0 and group.round_number >= C.FIFTH_CHANGE_ROUND
         condition_P4 = group.get_player_by_id(4).participant.number % 5 == 1 and group.round_number >= C.FIRST_CHANGE_ROUND or group.get_player_by_id(4).participant.number % 5 == 2 and group.round_number >= C.SECOND_CHANGE_ROUND  or group.get_player_by_id(4).participant.number % 5 == 3 and group.round_number >= C.THIRD_CHANGE_ROUND or group.get_player_by_id(4).participant.number % 5 == 4 and group.round_number >= C.FOURTH_CHANGE_ROUND or group.get_player_by_id(4).participant.number % 5 == 0 and group.round_number >= C.FIFTH_CHANGE_ROUND
-                
+
         return dict(
             other_players=player.get_others_in_group(),
             condition_P1=condition_P1,
