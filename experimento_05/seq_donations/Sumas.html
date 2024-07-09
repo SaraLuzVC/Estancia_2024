@@ -1,4 +1,3 @@
-
 {{ block title }}Aritmética{{ endblock }}
 {{ block content }}
 <!DOCTYPE html>
@@ -214,7 +213,6 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script type="text/javascript">
-
         let morralla = js_vars.dinero_inicial;
 
         $(document).ready(function () {
@@ -259,41 +257,43 @@
                     var modal = bootstrap.Modal.getInstance(myModalEl);
                     modal.hide();
 
-                    // Show the second modal after 7 seconds
-                    setTimeout(function () {
-                        // Set up `Modal_02` with updated `morralla` amount
-                        document.getElementById('initialAmount_02').textContent = morralla;
-                        $('#Modal_02').modal('show');
+                    // Show the second modal after the first modal is closed
+                    $('#Modal_01').on('hidden.bs.modal', function () {
+                        setTimeout(function () {
+                            // Set up `Modal_02` with updated `morralla` amount
+                            document.getElementById('initialAmount_02').textContent = morralla;
+                            $('#Modal_02').modal('show');
+                        }, 7000); // 7 seconds delay for showing the second modal
+                    });
+                }
+            });
 
-                        // Validate input and handle form submission for the second modal
-                        document.getElementById('submitButton_02').addEventListener('click', function (event) {
-                            var donationAmount_02 = parseFloat(document.getElementById('donacion_02').value);
-                            if (isNaN(donationAmount_02) || donationAmount_02 <= 0) {
-                                event.preventDefault(); // Prevent the modal from closing
-                                document.getElementById('donacion_02').classList.add('is-invalid');
-                                document.getElementById('exceedFeedback_02').style.display = 'none';
-                            } else if (donationAmount_02 > morralla) {
-                                event.preventDefault(); // Prevent the modal from closing
-                                document.getElementById('donacion_02').classList.add('is-invalid');
-                                document.getElementById('exceedFeedback_02').style.display = 'block';
-                            } else {
-                                document.getElementById('donacion_02').classList.remove('is-invalid');
-                                document.getElementById('exceedFeedback_02').style.display = 'none';
-                                console.log('Donation Amount:', donationAmount_02);
+            // Validate input and handle form submission for the second modal
+            document.getElementById('submitButton_02').addEventListener('click', function (event) {
+                var donationAmount_02 = parseFloat(document.getElementById('donacion_02').value);
+                if (isNaN(donationAmount_02) || donationAmount_02 <= 0) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_02').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_02').style.display = 'none';
+                } else if (donationAmount_02 > morralla) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_02').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_02').style.display = 'block';
+                } else {
+                    document.getElementById('donacion_02').classList.remove('is-invalid');
+                    document.getElementById('exceedFeedback_02').style.display = 'none';
+                    console.log('Donation Amount:', donationAmount_02);
 
-                                // Save the value to a variable or send it to the server
-                                var savedAmount_02 = donationAmount_02;
+                    // Save the value to a variable or send it to the server
+                    var savedAmount_02 = donationAmount_02;
 
-                                // Set the value of the field in the form and player variable
-                                forminputs['limosna_02'].value = `${savedAmount_02}`;
+                    // Set the value of the field in the form and player variable
+                    forminputs['limosna_02'].value = `${savedAmount_02}`;
 
-                                // Manually trigger the modal to close
-                                var myModalEl_02 = document.getElementById('Modal_02');
-                                var modal_02 = bootstrap.Modal.getInstance(myModalEl_02);
-                                modal_02.hide();
-                            }
-                        });
-                    }, 7000); // 7 seconds delay for showing the second modal
+                    // Manually trigger the modal to close
+                    var myModalEl_02 = document.getElementById('Modal_02');
+                    var modal_02 = bootstrap.Modal.getInstance(myModalEl_02);
+                    modal_02.hide();
                 }
             });
         });
