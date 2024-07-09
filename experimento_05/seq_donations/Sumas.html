@@ -15,6 +15,8 @@
 
 <body>
 
+    {{ next_button}}
+{{ formfield_errors 'limosna_01' }}
     <p>
         Please answer the following questions.
     </p>
@@ -119,33 +121,60 @@
     {{ formfield "aritmetica_098" }}
     {{ formfield "aritmetica_099" }}
     {{ formfield "aritmetica_100" }}
+    <div style="display: none;">
+        {{ formfield "limosna_01" }}
+        {{ formfield "limosna_02" }}
+        {{ formfield "limosna_03" }}
+        {{ formfield "limosna_04" }}
+        {{ formfield "limosna_05" }}
+        {{ formfield "limosna_06" }}
+        {{ formfield "limosna_07" }}
+        {{ formfield "limosna_08" }}
+    </div>
 
 
     {{ next_button }}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="modal fade" id="Modal_01" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Modal title</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <img src="{{ static 'imagen01.jpg' }}" />
-                                {{ formfield "limosna_01"}}
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal fade" id="Modal_01" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Black Knight wants your money</h5>
+                        </div>
+                        <div class="modal-body">
+                            <img src="{{ static 'imagen01.jpg' }}" />
+                            <p><br>None shall pass. I move for no man.</p>
+                            <form id="donationForm">
+                                <div class="form-group">
+                                    <label for="donacion_01">¿Cuánto dinero le das?</label>
+                                    <input type="number" class="form-control" id="donacion_01"
+                                        aria-describedby="amountHelp" required>
+                                    <small id="amountHelp" class="form-text text-muted">Tienes disponibles $<span
+                                            id="initialAmount"></span> pesos.</small>
+                                    <div class="invalid-feedback">
+                                        Por favor, ingresa una cantidad.
+                                    </div>
+                                    <div class="invalid-feedback" id="exceedFeedback">
+                                        La cantidad ingresada no puede exceder el monto disponible.
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="submitButton">Submit</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -153,18 +182,56 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script type="text/javascript">
+
+        let morralla = js_vars.dinero_inicial;
+
         $(document).ready(function () {
+            // Display the initial amount
+            document.getElementById('initialAmount').textContent = morralla;
+
+            // Show the modal after 2 seconds
             setTimeout(function () {
                 $('#Modal_01').modal('show');
             }, 2000);
+
+            // Validate input and handle form submission
+            document.getElementById('submitButton').addEventListener('click', function (event) {
+                var donationAmount_01 = parseFloat(document.getElementById('donacion_01').value);
+                if (isNaN(donationAmount_01) || donationAmount_01 <= 0) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_01').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback').style.display = 'none';
+                } else if (donationAmount_01 > morralla) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_01').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback').style.display = 'block';
+                } else {
+                    document.getElementById('donacion_01').classList.remove('is-invalid');
+                    document.getElementById('exceedFeedback').style.display = 'none';
+                    console.log('Donation Amount:', donationAmount_01);
+
+                    // Save the value to a variable or send it to the server
+                    var savedAmount_01 = donationAmount_01;
+
+                    // Update the morralla value
+                    morralla -= savedAmount_01;
+
+                    // Update the displayed amount
+                    document.getElementById('initialAmount').textContent = morralla;
+
+                    // Manually trigger the modal to close
+                    var myModalEl = document.getElementById('Modal_01');
+                    var modal = bootstrap.Modal.getInstance(myModalEl);
+                    modal.hide();
+                    debugger;
+                    // Set the value of the field in the form and player variable
+                    forminputs.limosna_01.value = `${savedAmount_01}`;
+
+
+                }
+            });
         });
     </script>
-    </body>
-    
-    </html>
-    {{ endblock }}
-
-
-
-
-
+</body>
+</html>
+{{ endblock }}
