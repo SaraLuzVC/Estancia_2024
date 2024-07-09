@@ -137,6 +137,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+
                 <!-- First Modal -->
                 <div class="modal fade" id="Modal_01" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -170,17 +171,19 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Second Modal -->
+                
                 <div class="modal fade" id="Modal_02" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">The Journey Continues</h5>
+                                <h5 class="modal-title">Patsy wants your money</h5>
                             </div>
                             <div class="modal-body">
                                 <img src="{{ static 'imagen02.jpg' }}" />
-                                <p><br>Now you face the next challenge.</p>
+                                <p><br>Patsy is the servant of King Arthur, banging coconuts together to imitate horse- galloping.</p>
                                 <form id="donationForm_02">
                                     <div class="form-group">
                                         <label for="donacion_02">¿Cuánto dinero le das?</label>
@@ -199,6 +202,42 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-primary" id="submitButton_02">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Third Modal -->
+                <div class="modal fade bd-example-modal-lg" id="Modal_03" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">The Journey Continues</h5>
+                            </div>
+                            <div class="modal-body">
+                                <video width="400" controls>
+                                    <source src="{{ static 'video03.mp4' }}" type="video/mp4">
+                                    Your browser does not support HTML video.
+                                </video>
+                                <p><br>Now you face the next challenge.</p>
+                                <form id="donationForm_03">
+                                    <div class="form-group">
+                                        <label for="donacion_03">¿Cuánto dinero le das?</label>
+                                        <input type="number" class="form-control" id="donacion_03"
+                                            aria-describedby="amountHelp_03" required>
+                                        <small id="amountHelp_03" class="form-text text-muted">Tienes disponibles $<span
+                                                id="initialAmount_03"></span> pesos.</small>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingresa una cantidad.
+                                        </div>
+                                        <div class="invalid-feedback" id="exceedFeedback_03">
+                                            La cantidad ingresada no puede exceder el monto disponible.
+                                        </div>
+                                    </div>
+                                </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="submitButton_03">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -263,7 +302,7 @@
                             // Set up `Modal_02` with updated `morralla` amount
                             document.getElementById('initialAmount_02').textContent = morralla;
                             $('#Modal_02').modal('show');
-                        }, 7000); // 7 seconds delay for showing the second modal
+                        }, 2000); // 7 seconds delay for showing the second modal
                     });
                 }
             });
@@ -287,6 +326,12 @@
                     // Save the value to a variable or send it to the server
                     var savedAmount_02 = donationAmount_02;
 
+                    // Update the morralla value
+                    morralla -= savedAmount_02;
+
+                    // Update the displayed amount
+                    document.getElementById('initialAmount_02').textContent = morralla;
+
                     // Set the value of the field in the form and player variable
                     forminputs['limosna_02'].value = `${savedAmount_02}`;
 
@@ -294,6 +339,50 @@
                     var myModalEl_02 = document.getElementById('Modal_02');
                     var modal_02 = bootstrap.Modal.getInstance(myModalEl_02);
                     modal_02.hide();
+
+                    // Show the third modal after the second modal is closed
+                    $('#Modal_02').on('hidden.bs.modal', function () {
+                        setTimeout(function () {
+                            // Set up `Modal_03` with updated `morralla` amount
+                            document.getElementById('initialAmount_03').textContent = morralla;
+                            $('#Modal_03').modal('show');
+                        }, 2000); // 7 seconds delay for showing the third modal
+                    });
+                }
+            });
+
+            // Validate input and handle form submission for the third modal
+            document.getElementById('submitButton_03').addEventListener('click', function (event) {
+                var donationAmount_03 = parseFloat(document.getElementById('donacion_03').value);
+                if (isNaN(donationAmount_03) || donationAmount_03 <= 0) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_03').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_03').style.display = 'none';
+                } else if (donationAmount_03 > morralla) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_03').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_03').style.display = 'block';
+                } else {
+                    document.getElementById('donacion_03').classList.remove('is-invalid');
+                    document.getElementById('exceedFeedback_03').style.display = 'none';
+                    console.log('Donation Amount:', donationAmount_03);
+
+                    // Save the value to a variable or send it to the server
+                    var savedAmount_03 = donationAmount_03;
+
+                    // Update the morralla value
+                    morralla -= savedAmount_03;
+
+                    // Update the displayed amount
+                    document.getElementById('initialAmount_03').textContent = morralla;
+
+                    // Set the value of the field in the form and player variable
+                    forminputs['limosna_03'].value = `${savedAmount_03}`;
+
+                    // Manually trigger the modal to close
+                    var myModalEl_03 = document.getElementById('Modal_03');
+                    var modal_03 = bootstrap.Modal.getInstance(myModalEl_03);
+                    modal_03.hide();
                 }
             });
         });
