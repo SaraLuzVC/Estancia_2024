@@ -148,7 +148,7 @@
                             </div>
                             <div class="modal-body">
                                 <img src="{{ static 'imagen01.jpg' }}" />
-                                <p><br>None shall pass. I move for no man.</p>
+                                <p><br>"None shall pass." <br>"I move for no man."</p>
                                 <form id="donationForm">
                                     <div class="form-group">
                                         <label for="donacion_01">¿Cuánto dinero le das?</label>
@@ -173,7 +173,6 @@
                 </div>
     
                 <!-- Second Modal -->
-    
                 <div class="modal fade" id="Modal_02" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
@@ -221,8 +220,7 @@
                                     <source src="{{ static 'video03.mp4' }}" type="video/mp4">
                                     Your browser does not support HTML video.
                                 </video>
-    
-                                <p><br>We don't have a lord.</p>
+                                <p><br>"We don't have a lord."</p>
                                 <form id="donationForm_03">
                                     <div class="form-group">
                                         <label for="donacion_03">¿Cuánto dinero le das?</label>
@@ -245,6 +243,46 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Fourth Modal -->
+                <div class="modal fade bd-example-modal-lg" id="Modal_04" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Another encounter with the Black Knight</h5>
+                            </div>
+                            <div class="modal-body">
+                                <video id="video04" width="400" controls>
+                                    <source src="{{ static 'video04.mp4' }}" type="video/mp4">
+                                    Your browser does not support HTML video.
+                                </video>
+                                <p><br>"'Tis but a flesh wound"</p>
+                                <form id="donationForm_04">
+                                    <div class="form-group">
+                                        <label for="donacion_04">¿Cuánto dinero le das?</label>
+                                        <input type="number" class="form-control" id="donacion_04"
+                                            aria-describedby="amountHelp_04" required>
+                                        <small id="amountHelp_04" class="form-text text-muted">Tienes disponibles $<span
+                                                id="initialAmount_04"></span> pesos.</small>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingresa una cantidad.
+                                        </div>
+                                        <div class="invalid-feedback" id="exceedFeedback_04">
+                                            La cantidad ingresada no puede exceder el monto disponible.
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="submitButton_04">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fifth Modal -->
+
             </div>
         </div>
     </div>
@@ -386,6 +424,15 @@
                     var myModalEl_03 = document.getElementById('Modal_03');
                     var modal_03 = bootstrap.Modal.getInstance(myModalEl_03);
                     modal_03.hide();
+
+                    // Show the fourth modal after the third modal is closed
+                    $('#Modal_03').on('hidden.bs.modal', function () {
+                        setTimeout(function () {
+                            // Set up `Modal_04` with updated `morralla` amount
+                            document.getElementById('initialAmount_04').textContent = morralla;
+                            $('#Modal_04').modal('show');
+                        }, 2000); // 7 seconds delay for showing the fourth modal
+                    });
                 }
             });
 
@@ -398,6 +445,53 @@
             // Pause video when the third modal is hidden
             $('#Modal_03').on('hidden.bs.modal', function () {
                 var video = document.getElementById('video03');
+                video.pause();
+            });
+
+            // Validate input and handle form submission for the fourth modal
+            document.getElementById('submitButton_04').addEventListener('click', function (event) {
+                var donationAmount_04 = parseFloat(document.getElementById('donacion_04').value);
+                if (isNaN(donationAmount_04) || donationAmount_04 <= 0) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_04').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_04').style.display = 'none';
+                } else if (donationAmount_04 > morralla) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_04').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_04').style.display = 'block';
+                } else {
+                    document.getElementById('donacion_04').classList.remove('is-invalid');
+                    document.getElementById('exceedFeedback_04').style.display = 'none';
+                    console.log('Donation Amount:', donationAmount_04);
+
+                    // Save the value to a variable or send it to the server
+                    var savedAmount_04 = donationAmount_04;
+
+                    // Update the morralla value
+                    morralla -= savedAmount_04;
+
+                    // Update the displayed amount
+                    document.getElementById('initialAmount_04').textContent = morralla;
+
+                    // Set the value of the field in the form and player variable
+                    forminputs['limosna_04'].value = `${savedAmount_04}`;
+
+                    // Manually trigger the modal to close
+                    var myModalEl_04 = document.getElementById('Modal_04');
+                    var modal_04 = bootstrap.Modal.getInstance(myModalEl_04);
+                    modal_04.hide();
+                }
+            });
+
+            // Play video when the fourth modal is shown
+            $('#Modal_04').on('shown.bs.modal', function () {
+                var video = document.getElementById('video04');
+                video.play();
+            });
+
+            // Pause video when the fourth modal is hidden
+            $('#Modal_04').on('hidden.bs.modal', function () {
+                var video = document.getElementById('video04');
                 video.pause();
             });
         });
