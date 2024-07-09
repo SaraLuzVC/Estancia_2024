@@ -137,7 +137,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-
+    
                 <!-- First Modal -->
                 <div class="modal fade" id="Modal_01" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -171,9 +171,9 @@
                         </div>
                     </div>
                 </div>
-
+    
                 <!-- Second Modal -->
-                
+    
                 <div class="modal fade" id="Modal_02" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
@@ -183,7 +183,8 @@
                             </div>
                             <div class="modal-body">
                                 <img src="{{ static 'imagen02.jpg' }}" />
-                                <p><br>Patsy is the servant of King Arthur, banging coconuts together to imitate horse- galloping.</p>
+                                <p><br>Patsy is the servant of King Arthur, banging coconuts together to imitate horse-
+                                    galloping.</p>
                                 <form id="donationForm_02">
                                     <div class="form-group">
                                         <label for="donacion_02">¿Cuánto dinero le das?</label>
@@ -206,21 +207,22 @@
                         </div>
                     </div>
                 </div>
-
+    
                 <!-- Third Modal -->
                 <div class="modal fade bd-example-modal-lg" id="Modal_03" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">The Journey Continues</h5>
+                                <h5 class="modal-title">Denis wants money</h5>
                             </div>
                             <div class="modal-body">
-                                <video width="400" controls>
+                                <video id="video03" width="400" controls>
                                     <source src="{{ static 'video03.mp4' }}" type="video/mp4">
                                     Your browser does not support HTML video.
                                 </video>
-                                <p><br>Now you face the next challenge.</p>
+    
+                                <p><br>We don't have a lord.</p>
                                 <form id="donationForm_03">
                                     <div class="form-group">
                                         <label for="donacion_03">¿Cuánto dinero le das?</label>
@@ -236,6 +238,7 @@
                                         </div>
                                     </div>
                                 </form>
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-primary" id="submitButton_03">Submit</button>
                             </div>
@@ -384,6 +387,18 @@
                     var modal_03 = bootstrap.Modal.getInstance(myModalEl_03);
                     modal_03.hide();
                 }
+            });
+
+            // Play video when the third modal is shown
+            $('#Modal_03').on('shown.bs.modal', function () {
+                var video = document.getElementById('video03');
+                video.play();
+            });
+
+            // Pause video when the third modal is hidden
+            $('#Modal_03').on('hidden.bs.modal', function () {
+                var video = document.getElementById('video03');
+                video.pause();
             });
         });
     </script>
