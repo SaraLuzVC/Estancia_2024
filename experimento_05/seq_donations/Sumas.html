@@ -1,4 +1,3 @@
-
 {{ block title }}Aritmética{{ endblock }}
 {{ block content }}
 <!DOCTYPE html>
@@ -135,46 +134,120 @@
 
     {{ next_button }}
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="modal fade" id="Modal_01" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Black Knight wants your money</h5>
-                        </div>
-                        <div class="modal-body">
-                            <img src="{{ static 'imagen01.jpg' }}" />
-                            <p><br>None shall pass. I move for no man.</p>
-                            <form id="donationForm">
-                                <div class="form-group">
-                                    <label for="donacion_01">¿Cuánto dinero le das?</label>
-                                    <input type="number" class="form-control" id="donacion_01"
-                                        aria-describedby="amountHelp" required>
-                                    <small id="amountHelp" class="form-text text-muted">Tienes disponibles $<span
-                                            id="initialAmount"></span> pesos.</small>
-                                    <div class="invalid-feedback">
-                                        Por favor, ingresa una cantidad.
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+    
+                <!-- First Modal -->
+                <div class="modal fade" id="Modal_01" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Black Knight wants your money</h5>
+                            </div>
+                            <div class="modal-body">
+                                <img src="{{ static 'imagen01.jpg' }}" />
+                                <p><br>None shall pass. I move for no man.</p>
+                                <form id="donationForm">
+                                    <div class="form-group">
+                                        <label for="donacion_01">¿Cuánto dinero le das?</label>
+                                        <input type="number" class="form-control" id="donacion_01"
+                                            aria-describedby="amountHelp" required>
+                                        <small id="amountHelp" class="form-text text-muted">Tienes disponibles $<span
+                                                id="initialAmount"></span> pesos.</small>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingresa una cantidad.
+                                        </div>
+                                        <div class="invalid-feedback" id="exceedFeedback">
+                                            La cantidad ingresada no puede exceder el monto disponible.
+                                        </div>
                                     </div>
-                                    <div class="invalid-feedback" id="exceedFeedback">
-                                        La cantidad ingresada no puede exceder el monto disponible.
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="submitButton">Submit</button>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="submitButton">Submit</button>
+                    </div>
+                </div>
+    
+                <!-- Second Modal -->
+    
+                <div class="modal fade" id="Modal_02" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Patsy wants your money</h5>
+                            </div>
+                            <div class="modal-body">
+                                <img src="{{ static 'imagen02.jpg' }}" />
+                                <p><br>Patsy is the servant of King Arthur, banging coconuts together to imitate horse-
+                                    galloping.</p>
+                                <form id="donationForm_02">
+                                    <div class="form-group">
+                                        <label for="donacion_02">¿Cuánto dinero le das?</label>
+                                        <input type="number" class="form-control" id="donacion_02"
+                                            aria-describedby="amountHelp_02" required>
+                                        <small id="amountHelp_02" class="form-text text-muted">Tienes disponibles $<span
+                                                id="initialAmount_02"></span> pesos.</small>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingresa una cantidad.
+                                        </div>
+                                        <div class="invalid-feedback" id="exceedFeedback_02">
+                                            La cantidad ingresada no puede exceder el monto disponible.
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="submitButton_02">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Third Modal -->
+                <div class="modal fade bd-example-modal-lg" id="Modal_03" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Denis wants money</h5>
+                            </div>
+                            <div class="modal-body">
+                                <video id="video03" width="400" controls>
+                                    <source src="{{ static 'video03.mp4' }}" type="video/mp4">
+                                    Your browser does not support HTML video.
+                                </video>
+    
+                                <p><br>We don't have a lord.</p>
+                                <form id="donationForm_03">
+                                    <div class="form-group">
+                                        <label for="donacion_03">¿Cuánto dinero le das?</label>
+                                        <input type="number" class="form-control" id="donacion_03"
+                                            aria-describedby="amountHelp_03" required>
+                                        <small id="amountHelp_03" class="form-text text-muted">Tienes disponibles $<span
+                                                id="initialAmount_03"></span> pesos.</small>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingresa una cantidad.
+                                        </div>
+                                        <div class="invalid-feedback" id="exceedFeedback_03">
+                                            La cantidad ingresada no puede exceder el monto disponible.
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="submitButton_03">Submit</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -182,19 +255,18 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script type="text/javascript">
-
         let morralla = js_vars.dinero_inicial;
 
         $(document).ready(function () {
             // Display the initial amount
             document.getElementById('initialAmount').textContent = morralla;
 
-            // Show the modal after 2 seconds
+            // Show the first modal after 2 seconds
             setTimeout(function () {
                 $('#Modal_01').modal('show');
             }, 2000);
 
-            // Validate input and handle form submission
+            // Validate input and handle form submission for the first modal
             document.getElementById('submitButton').addEventListener('click', function (event) {
                 var donationAmount_01 = parseFloat(document.getElementById('donacion_01').value);
                 if (isNaN(donationAmount_01) || donationAmount_01 <= 0) {
@@ -219,19 +291,118 @@
                     // Update the displayed amount
                     document.getElementById('initialAmount').textContent = morralla;
 
+                    // Set the value of the field in the form and player variable
+                    forminputs['limosna_01'].value = `${savedAmount_01}`;
+
                     // Manually trigger the modal to close
                     var myModalEl = document.getElementById('Modal_01');
                     var modal = bootstrap.Modal.getInstance(myModalEl);
                     modal.hide();
-                    debugger;
-                    // Set the value of the field in the form and player variable
-                    forminputs.limosna_01.value = `${savedAmount_01}`;
 
-
+                    // Show the second modal after the first modal is closed
+                    $('#Modal_01').on('hidden.bs.modal', function () {
+                        setTimeout(function () {
+                            // Set up `Modal_02` with updated `morralla` amount
+                            document.getElementById('initialAmount_02').textContent = morralla;
+                            $('#Modal_02').modal('show');
+                        }, 2000); // 7 seconds delay for showing the second modal
+                    });
                 }
+            });
+
+            // Validate input and handle form submission for the second modal
+            document.getElementById('submitButton_02').addEventListener('click', function (event) {
+                var donationAmount_02 = parseFloat(document.getElementById('donacion_02').value);
+                if (isNaN(donationAmount_02) || donationAmount_02 <= 0) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_02').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_02').style.display = 'none';
+                } else if (donationAmount_02 > morralla) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_02').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_02').style.display = 'block';
+                } else {
+                    document.getElementById('donacion_02').classList.remove('is-invalid');
+                    document.getElementById('exceedFeedback_02').style.display = 'none';
+                    console.log('Donation Amount:', donationAmount_02);
+
+                    // Save the value to a variable or send it to the server
+                    var savedAmount_02 = donationAmount_02;
+
+                    // Update the morralla value
+                    morralla -= savedAmount_02;
+
+                    // Update the displayed amount
+                    document.getElementById('initialAmount_02').textContent = morralla;
+
+                    // Set the value of the field in the form and player variable
+                    forminputs['limosna_02'].value = `${savedAmount_02}`;
+
+                    // Manually trigger the modal to close
+                    var myModalEl_02 = document.getElementById('Modal_02');
+                    var modal_02 = bootstrap.Modal.getInstance(myModalEl_02);
+                    modal_02.hide();
+
+                    // Show the third modal after the second modal is closed
+                    $('#Modal_02').on('hidden.bs.modal', function () {
+                        setTimeout(function () {
+                            // Set up `Modal_03` with updated `morralla` amount
+                            document.getElementById('initialAmount_03').textContent = morralla;
+                            $('#Modal_03').modal('show');
+                        }, 2000); // 7 seconds delay for showing the third modal
+                    });
+                }
+            });
+
+            // Validate input and handle form submission for the third modal
+            document.getElementById('submitButton_03').addEventListener('click', function (event) {
+                var donationAmount_03 = parseFloat(document.getElementById('donacion_03').value);
+                if (isNaN(donationAmount_03) || donationAmount_03 <= 0) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_03').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_03').style.display = 'none';
+                } else if (donationAmount_03 > morralla) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_03').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_03').style.display = 'block';
+                } else {
+                    document.getElementById('donacion_03').classList.remove('is-invalid');
+                    document.getElementById('exceedFeedback_03').style.display = 'none';
+                    console.log('Donation Amount:', donationAmount_03);
+
+                    // Save the value to a variable or send it to the server
+                    var savedAmount_03 = donationAmount_03;
+
+                    // Update the morralla value
+                    morralla -= savedAmount_03;
+
+                    // Update the displayed amount
+                    document.getElementById('initialAmount_03').textContent = morralla;
+
+                    // Set the value of the field in the form and player variable
+                    forminputs['limosna_03'].value = `${savedAmount_03}`;
+
+                    // Manually trigger the modal to close
+                    var myModalEl_03 = document.getElementById('Modal_03');
+                    var modal_03 = bootstrap.Modal.getInstance(myModalEl_03);
+                    modal_03.hide();
+                }
+            });
+
+            // Play video when the third modal is shown
+            $('#Modal_03').on('shown.bs.modal', function () {
+                var video = document.getElementById('video03');
+                video.play();
+            });
+
+            // Pause video when the third modal is hidden
+            $('#Modal_03').on('hidden.bs.modal', function () {
+                var video = document.getElementById('video03');
+                video.pause();
             });
         });
     </script>
-</body>
-</html>
-{{ endblock }}
+    </body>
+    
+    </html>
+    {{ endblock }}
