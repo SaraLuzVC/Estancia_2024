@@ -282,6 +282,43 @@
                 </div>
 
                 <!-- Fifth Modal -->
+                <div class="modal fade bd-example-modal-lg" id="Modal_05" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">The Black Knight is back</h5>
+                            </div>
+                            <div class="modal-body">
+                                <video id="video05" width="400">
+                                    <source src="{{ static 'video05.mp4' }}" type="video/mp4">
+                                    Your browser does not support HTML video.
+                                </video>
+                                <p><br>"I'm invincible!"</p>
+                                <form id="donationForm_05">
+                                    <div class="form-group">
+                                        <label for="donacion_05">¿Cuánto dinero le das?</label>
+                                        <input type="number" class="form-control" id="donacion_05"
+                                            aria-describedby="amountHelp_05" required>
+                                        <small id="amountHelp_05" class="form-text text-muted">Tienes disponibles $<span
+                                                id="initialAmount_05"></span> pesos.</small>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingresa una cantidad.
+                                        </div>
+                                        <div class="invalid-feedback" id="exceedFeedback_05">
+                                            La cantidad ingresada no puede exceder el monto disponible.
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="submitButton_05">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sixth Modal -->
 
             </div>
         </div>
@@ -480,6 +517,15 @@
                     var myModalEl_04 = document.getElementById('Modal_04');
                     var modal_04 = bootstrap.Modal.getInstance(myModalEl_04);
                     modal_04.hide();
+
+                    // Show the fifth modal after the fourth modal is closed
+                    $('#Modal_04').on('hidden.bs.modal', function () {
+                        setTimeout(function () {
+                            // Set up `Modal_05` with updated `morralla` amount
+                            document.getElementById('initialAmount_05').textContent = morralla;
+                            $('#Modal_05').modal('show');
+                        }, 2000); // 7 seconds delay for showing the fifth modal
+                    });
                 }
             });
 
@@ -493,6 +539,51 @@
             $('#Modal_04').on('hidden.bs.modal', function () {
                 var video = document.getElementById('video04');
                 video.pause();
+            });
+
+            // Validate input and handle form submission for the fifth modal
+            document.getElementById('submitButton_05').addEventListener('click', function (event) {
+                var donationAmount_05 = parseFloat(document.getElementById('donacion_05').value);
+                if (isNaN(donationAmount_05) || donationAmount_05 <= 0) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_05').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_05').style.display = 'none';
+                } else if (donationAmount_05 > morralla) {
+                    event.preventDefault(); // Prevent the modal from closing
+                    document.getElementById('donacion_05').classList.add('is-invalid');
+                    document.getElementById('exceedFeedback_05').style.display = 'block';
+                } else {
+                    document.getElementById('donacion_05').classList.remove('is-invalid');
+                    document.getElementById('exceedFeedback_05').style.display = 'none';
+                    console.log('Donation Amount:', donationAmount_05);
+
+                    // Save the value to a variable or send it to the server
+                    var savedAmount_05 = donationAmount_05;
+
+                    // Update the morralla value
+                    morralla -= savedAmount_05;
+
+                    // Update the displayed amount
+                    document.getElementById('initialAmount_05').textContent = morralla;
+
+                    // Set the value of the field in the form and player variable
+                    forminputs['limosna_05'].value = `${savedAmount_05}`;
+
+                    // Manually trigger the modal to close
+                    var myModalEl_05 = document.getElementById('Modal_05');
+                    var modal_05 = bootstrap.Modal.getInstance(myModalEl_05);
+                    modal_05.hide();
+
+                    // Show the sixth modal after the fifth modal is closed
+                    //$('#Modal_05').on('hidden.bs.modal', function () {
+                    //    setTimeout(function () {
+                            // Set up `Modal_06` with updated `morralla` amount
+                            // document.getElementById('initialAmount_06').textContent = morralla;
+                            // $('#Modal_06').modal('show');
+                    //        document.getElementById('nextButton').click();
+                     //   }, 2000); // 7 seconds delay for showing the sixth modal
+                    //});
+                }
             });
         });
     </script>
