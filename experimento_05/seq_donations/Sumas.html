@@ -14,6 +14,9 @@
     <style>
     #video_07 {
         display: none;
+    flex-direction: column;
+    flex-wrap: wrap-reverse;
+    align-content: center;
         background-color: white;
         box-shadow: black 0px 0px 10px;
         position: fixed;
@@ -21,10 +24,17 @@
         left: 30vw;
         width: 40vw;
         height: 40vh;
+        /* Center the content inside the container */
+        align-items: center;
+        justify-content: center;
     }
 
     #video_08 {
         display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    flex-wrap: wrap-reverse;
+    align-content: center;
         background-color: white;
         box-shadow: black 0px 0px 10px;
         position: fixed;
@@ -32,6 +42,9 @@
         left: 30vw;
         width: 40vw;
         height: 40vh;
+        /* Center the content inside the container */
+        align-items: center;
+        justify-content: center;
     }
     </style>
 
@@ -241,7 +254,7 @@
                                 <h5 class="modal-title">Denis wants money</h5>
                             </div>
                             <div class="modal-body">
-                                <video id="video03" width="400" controls>
+                                <video id="video03" width="600" controls>
                                     <source src="{{ static 'video03.mp4' }}" type="video/mp4">
                                     Your browser does not support HTML video.
                                 </video>
@@ -315,7 +328,7 @@
                                 <h5 class="modal-title">Simple School Rules</h5>
                             </div>
                             <div class="modal-body">
-                                <video id="video05a" width="400" controls>
+                                <video id="video05a" width="600" controls>
                                     <source src="{{ static 'video05.mp4' }}" type="video/mp4">
                                     Your browser does not support HTML video.
                                 </video>
@@ -369,7 +382,7 @@
                                 <h5 class="modal-title">The Knights who say Ni</h5>
                             </div>
                             <div class="modal-body">
-                                <video id="video06a" width="400" controls>
+                                <video id="video06a" width="600" controls>
                                     <source src="{{ static 'video06.mp4' }}" type="video/mp4">
                                     Your browser does not support HTML video.
                                 </video>
@@ -524,7 +537,7 @@
 
                 <div id="video_07">
                     <h5>SPAM</h5>
-                    <video id="video07a" width="400" controls>
+                    <video id="video07a" width="600" controls>
                         <source src="{{ static 'video07.mp4' }}" type="video/mp4">
                         Your browser does not support HTML video.
                     </video>
@@ -532,7 +545,7 @@
                 </div>
                 <div id="video_08">
                     <h5>Mr Creosote wants a bucket</h5>
-                    <video id="video08a" width="400" controls>
+                    <video id="video08a" width="600" controls>
                         <source src="{{ static 'video08.mp4' }}" type="video/mp4">
                         Your browser does not support HTML video.
                     </video>
@@ -868,14 +881,15 @@
                         //document.getElementById('initialAmount_07').textContent = morralla;
                         debugger
                         $('#video_07').show('slow');
-                        $('#video_07').trigger('shown');
+                        $('#video_07').css('display', 'flex');
+                        $('#video_07').trigger('show1');
                     }, 2000); // 2 seconds delay for showing the seventh modal
                 });
             }
         });
 
             // Play video when `video_07` container is shown
-        $('#video_07').on('shown', function () {
+        $('#video_07').on('show1', function () {
             var video = document.getElementById('video07a');
             console.log('video07a', video)         
             video.play();
@@ -884,11 +898,11 @@
         // Close the `video_07` and show `Modal_07b` when the video finishes
         $('#video07a').on('ended', function () {
             $('#video_07').hide('slow');
-            $('#video_07').trigger('hide');
+            $('#video_07').trigger('hide1');
         });
 
         // Show `Modal_07b` after `video_07` hides
-        $('#video_07').on('hide', function () {
+        $('#video_07').on('hide1', function () {
             setTimeout(function () {
                 // Set up `Modal_07b` with updated `morralla` amount
                 document.getElementById('initialAmount_07').textContent = morralla;
@@ -930,32 +944,39 @@
                 modal_07b.hide();
 
                 // Show the video_08 after the sixth modal is closed
-                $('#Modal_06b').on('hidden.bs.modal', function () {
+                $('#Modal_07b').on('hidden.bs.modal', function () {
                     setTimeout(function () {
                         // Set up `Modal_07a` with updated `morralla` amount
                         //document.getElementById('initialAmount_07').textContent = morralla;
                         $('#video_08').show('slow');
+                        $('#video_08').css('display','flex');
+                        $('#video_08').trigger('show2');
                     }, 2000); // 7 seconds delay for showing the seventh modal
                 });
             }
         });
 
-        // Play video when video_07 container is shown
-        $('#video_08').on('show', function () {
+        // Play video when video_08 container is shown
+        $('#video_08').on('show2', function () {
             var video = document.getElementById('video08a');
             video.play();
+            debugger
         });
 
-        // Close the eighth modal part A and show part B when the video finishes
+        // Close the `video_08` and show `Modal_08b` when the video finishes
         $('#video08a').on('ended', function () {
-            $('#video_07').hide('slow');
-            $('#Modal_08a').on('hidden.bs.modal', function () {
-                setTimeout(function () {
-                    // Set up `Modal_08b` with updated `morralla` amount
-                    document.getElementById('initialAmount_08').textContent = morralla;
-                    $('#Modal_08b').modal('show');
-                }, 100); // Show the eighth modal part B immediately after part A is hidden
-            });
+            debugger
+            $('#video_08').hide('slow');
+            $('#video_08').trigger('hide2');
+        });
+
+        // Show `Modal_08b` after `video_08` hides
+        $('#video_08').on('hide2', function () {
+            setTimeout(function () {
+                // Set up `Modal_08b` with updated `morralla` amount
+                document.getElementById('initialAmount_08').textContent = morralla;
+                $('#Modal_08b').modal('show');
+            }, 100); // Show `Modal_08b` immediately after `video_08` is hidden
         });
 
         // Validate input and handle form submission for the eighth modal part B
