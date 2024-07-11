@@ -1,10 +1,11 @@
 {{ block title }}Results{{ endblock }}
 {{ block content }}
 
-    <h1>Results</h1>
-    {{player.dinero_inicial}}
-    {{player.limosna_total}}
-    {{player.payoff}}
+    <p>dinero inicial {{dinero_inicial}}</p>
+    <p>dinero donado {{limosna_total}}</p>
+    <p> subtotal {{subtotal}}</p>
+    <p>dinero ganado {{dinero_ganado}}</p>
+    <p>pago {{player.payoff}}</p>
 
     {{ next_button }}
 
