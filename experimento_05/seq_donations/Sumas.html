@@ -10,9 +10,10 @@
     <title>Sumas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <style>
-      #video-molesto {
-          display: none;
+
+    <style>
+    #video_07 {
+        display: none;
         background-color: white;
         box-shadow: black 0px 0px 10px;
         position: fixed;
@@ -21,7 +22,19 @@
         width: 40vw;
         height: 40vh;
     }
-            </style>
+
+    #video_08 {
+        display: none;
+        background-color: white;
+        box-shadow: black 0px 0px 10px;
+        position: fixed;
+        top: 10px;
+        left: 30vw;
+        width: 40vw;
+        height: 40vh;
+    }
+    </style>
+
 </head>
 
 <body>
@@ -299,14 +312,14 @@
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Mr Creosote wants a bucket</h5>
+                                <h5 class="modal-title">Simple School Rules</h5>
                             </div>
                             <div class="modal-body">
                                 <video id="video05a" width="400" controls>
                                     <source src="{{ static 'video05.mp4' }}" type="video/mp4">
                                     Your browser does not support HTML video.
                                 </video>
-                                <p><br>"Espera a que el video termine"</p>
+                                <p><br>Should Wymer move his clothes down onto the lower peg?</p>
                             </div>
                             <div class="modal-footer">
                             
@@ -321,7 +334,7 @@
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Give a donation to the cleaning lady</h5>
+                                <h5 class="modal-title">Give money to Mr Wymer</h5>
                             </div>
                             <div class="modal-body">
                                 <form id="donationForm_05">
@@ -402,7 +415,7 @@
                 </div>
 
                 <!-- Seventh Modal Part A -->
-                <div class="modal fade bd-example-modal-lg" id="Modal_07a" data-bs-backdrop="static" data-bs-keyboard="false"
+                <!-- <div class="modal fade bd-example-modal-lg" id="Modal_07a" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
@@ -421,7 +434,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Seventh Modal Part B -->
                 <div class="modal fade bd-example-modal-lg" id="Modal_07b" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -456,26 +469,26 @@
                 </div>
 
                 <!-- Eighth Modal Part A -->
-                <div class="modal fade bd-example-modal-lg" id="Modal_08a" data-bs-backdrop="static" data-bs-keyboard="false"
+                <!-- <div class="modal fade bd-example-modal-lg" id="Modal_08a" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Simple school rules</h5>
+                                <h5 class="modal-title">Mr Creosote wants a bucket</h5>
                             </div>
                             <div class="modal-body">
                                 <video id="video08a" width="400" controls>
                                     <source src="{{ static 'video08.mp4' }}" type="video/mp4">
                                     Your browser does not support HTML video.
                                 </video>
-                                <p><br>Should Wymer move his clothes down onto the lower peg?</p>
+                                <p><br>A new bucket and a cleaning woman.</p>
                             </div>
                             <div class="modal-footer">
 
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Eighth Modal Part B -->
                 <div class="modal fade bd-example-modal-lg" id="Modal_08b" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -483,7 +496,7 @@
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Give money to Mr Wymer</h5>
+                                <h5 class="modal-title">Give money to the cleaning lady</h5>
                             </div>
                             <div class="modal-body">
                                 <form id="donationForm_08">
@@ -509,7 +522,22 @@
                     </div>
                 </div>
 
-                <div id="video-molesto">
+                <div id="video_07">
+                    <h5>SPAM</h5>
+                    <video id="video07a" width="400" controls>
+                        <source src="{{ static 'video07.mp4' }}" type="video/mp4">
+                        Your browser does not support HTML video.
+                    </video>
+                    <p><br>"Spam spam spam spam spam"</p>
+                </div>
+                <div id="video_08">
+                    <h5>Mr Creosote wants a bucket</h5>
+                    <video id="video08a" width="400" controls>
+                        <source src="{{ static 'video08.mp4' }}" type="video/mp4">
+                        Your browser does not support HTML video.
+                    </video>
+                    <p><br>A new bucket and a cleaning woman.</p>
+                </div>
 
             </div>
         </div>
@@ -535,7 +563,7 @@
         // Validate input and handle form submission for the first modal
         document.getElementById('submitButton').addEventListener('click', function (event) {
             var donationAmount_01 = parseFloat(document.getElementById('donacion_01').value);
-            if (isNaN(donationAmount_01) || donationAmount_01 <= 0) {
+            if (isNaN(donationAmount_01) || donationAmount_01 < 0) {
                 event.preventDefault(); // Prevent the modal from closing
                 document.getElementById('donacion_01').classList.add('is-invalid');
                 document.getElementById('exceedFeedback').style.display = 'none';
@@ -579,7 +607,7 @@
         // Validate input and handle form submission for the second modal
         document.getElementById('submitButton_02').addEventListener('click', function (event) {
             var donationAmount_02 = parseFloat(document.getElementById('donacion_02').value);
-            if (isNaN(donationAmount_02) || donationAmount_02 <= 0) {
+            if (isNaN(donationAmount_02) || donationAmount_02 < 0) {
                 event.preventDefault(); // Prevent the modal from closing
                 document.getElementById('donacion_02').classList.add('is-invalid');
                 document.getElementById('exceedFeedback_02').style.display = 'none';
@@ -623,7 +651,7 @@
         // Validate input and handle form submission for the third modal
         document.getElementById('submitButton_03').addEventListener('click', function (event) {
             var donationAmount_03 = parseFloat(document.getElementById('donacion_03').value);
-            if (isNaN(donationAmount_03) || donationAmount_03 <= 0) {
+            if (isNaN(donationAmount_03) || donationAmount_03 < 0) {
                 event.preventDefault(); // Prevent the modal from closing
                 document.getElementById('donacion_03').classList.add('is-invalid');
                 document.getElementById('exceedFeedback_03').style.display = 'none';
@@ -679,7 +707,7 @@
         // Validate input and handle form submission for the fourth modal
         document.getElementById('submitButton_04').addEventListener('click', function (event) {
             var donationAmount_04 = parseFloat(document.getElementById('donacion_04').value);
-            if (isNaN(donationAmount_04) || donationAmount_04 <= 0) {
+            if (isNaN(donationAmount_04) || donationAmount_04 < 0) {
                 event.preventDefault(); // Prevent the modal from closing
                 document.getElementById('donacion_04').classList.add('is-invalid');
                 document.getElementById('exceedFeedback_04').style.display = 'none';
@@ -741,7 +769,7 @@
         // Validate input and handle form submission for the fifth modal part B
         document.getElementById('submitButton_05').addEventListener('click', function (event) {
             var donationAmount_05 = parseFloat(document.getElementById('donacion_05').value);
-            if (isNaN(donationAmount_05) || donationAmount_05 <= 0) {
+            if (isNaN(donationAmount_05) || donationAmount_05 < 0) {
                 event.preventDefault(); // Prevent the modal from closing
                 document.getElementById('donacion_05').classList.add('is-invalid');
                 document.getElementById('exceedFeedback_05').style.display = 'none';
@@ -803,7 +831,7 @@
         // Validate input and handle form submission for the sixth modal part B
         document.getElementById('submitButton_06').addEventListener('click', function (event) {
             var donationAmount_06 = parseFloat(document.getElementById('donacion_06').value);
-            if (isNaN(donationAmount_06) || donationAmount_06 <= 0) {
+            if (isNaN(donationAmount_06) || donationAmount_06 < 0) {
                 event.preventDefault(); // Prevent the modal from closing
                 document.getElementById('donacion_06').classList.add('is-invalid');
                 document.getElementById('exceedFeedback_06').style.display = 'none';
@@ -833,39 +861,45 @@
                 var modal_06b = bootstrap.Modal.getInstance(myModalEl_06b);
                 modal_06b.hide();
 
-                // Show the seventh modal after the sixth modal is closed
+                // Show the video_07 after the sixth modal is closed
                 $('#Modal_06b').on('hidden.bs.modal', function () {
                     setTimeout(function () {
                         // Set up `Modal_07a` with updated `morralla` amount
-                        document.getElementById('initialAmount_07').textContent = morralla;
-                        $('#Modal_07a').modal('show');
-                    }, 2000); // 7 seconds delay for showing the seventh modal
+                        //document.getElementById('initialAmount_07').textContent = morralla;
+                        debugger
+                        $('#video_07').show('slow');
+                        $('#video_07').trigger('shown');
+                    }, 2000); // 2 seconds delay for showing the seventh modal
                 });
             }
         });
 
-        // Play video when the seventh modal part A is shown
-        $('#Modal_07a').on('shown.bs.modal', function () {
+            // Play video when `video_07` container is shown
+        $('#video_07').on('shown', function () {
             var video = document.getElementById('video07a');
+            console.log('video07a', video)         
             video.play();
         });
 
-        // Close the seventh modal part A and show part B when the video finishes
+        // Close the `video_07` and show `Modal_07b` when the video finishes
         $('#video07a').on('ended', function () {
-            $('#Modal_07a').modal('hide');
-            $('#Modal_07a').on('hidden.bs.modal', function () {
-                setTimeout(function () {
-                    // Set up `Modal_07b` with updated `morralla` amount
-                    document.getElementById('initialAmount_07').textContent = morralla;
-                    $('#Modal_07b').modal('show');
-                }, 100); // Show the seventh modal part B immediately after part A is hidden
-            });
+            $('#video_07').hide('slow');
+            $('#video_07').trigger('hide');
+        });
+
+        // Show `Modal_07b` after `video_07` hides
+        $('#video_07').on('hide', function () {
+            setTimeout(function () {
+                // Set up `Modal_07b` with updated `morralla` amount
+                document.getElementById('initialAmount_07').textContent = morralla;
+                $('#Modal_07b').modal('show');
+            }, 100); // Show `Modal_07b` immediately after `video_07` is hidden
         });
 
         // Validate input and handle form submission for the seventh modal part B
         document.getElementById('submitButton_07').addEventListener('click', function (event) {
             var donationAmount_07 = parseFloat(document.getElementById('donacion_07').value);
-            if (isNaN(donationAmount_07) || donationAmount_07 <= 0) {
+            if (isNaN(donationAmount_07) || donationAmount_07 < 0) {
                 event.preventDefault(); // Prevent the modal from closing
                 document.getElementById('donacion_07').classList.add('is-invalid');
                 document.getElementById('exceedFeedback_07').style.display = 'none';
@@ -895,26 +929,26 @@
                 var modal_07b = bootstrap.Modal.getInstance(myModalEl_07b);
                 modal_07b.hide();
 
-                // Show the eighth modal after the seventh modal is closed
-                $('#Modal_07b').on('hidden.bs.modal', function () {
+                // Show the video_08 after the sixth modal is closed
+                $('#Modal_06b').on('hidden.bs.modal', function () {
                     setTimeout(function () {
-                        // Set up `Modal_08a` with updated `morralla` amount
-                        document.getElementById('initialAmount_08').textContent = morralla;
-                        $('#Modal_08a').modal('show');
-                    }, 2000); // 7 seconds delay for showing the eighth modal
+                        // Set up `Modal_07a` with updated `morralla` amount
+                        //document.getElementById('initialAmount_07').textContent = morralla;
+                        $('#video_08').show('slow');
+                    }, 2000); // 7 seconds delay for showing the seventh modal
                 });
             }
         });
 
-        // Play video when the eighth modal part A is shown
-        $('#Modal_08a').on('shown.bs.modal', function () {
+        // Play video when video_07 container is shown
+        $('#video_08').on('show', function () {
             var video = document.getElementById('video08a');
             video.play();
         });
 
         // Close the eighth modal part A and show part B when the video finishes
         $('#video08a').on('ended', function () {
-            $('#Modal_08a').modal('hide');
+            $('#video_07').hide('slow');
             $('#Modal_08a').on('hidden.bs.modal', function () {
                 setTimeout(function () {
                     // Set up `Modal_08b` with updated `morralla` amount
@@ -927,7 +961,7 @@
         // Validate input and handle form submission for the eighth modal part B
         document.getElementById('submitButton_08').addEventListener('click', function (event) {
             var donationAmount_08 = parseFloat(document.getElementById('donacion_08').value);
-            if (isNaN(donationAmount_08) || donationAmount_08 <= 0) {
+            if (isNaN(donationAmount_08) || donationAmount_08 < 0) {
                 event.preventDefault(); // Prevent the modal from closing
                 document.getElementById('donacion_08').classList.add('is-invalid');
                 document.getElementById('exceedFeedback_08').style.display = 'none';
