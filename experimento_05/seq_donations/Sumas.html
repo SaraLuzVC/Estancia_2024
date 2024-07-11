@@ -291,7 +291,7 @@
                                 <h5 class="modal-title">Another encounter with the Black Knight</h5>
                             </div>
                             <div class="modal-body">
-                                <video id="video04" width="400" controls>
+                                <video id="video04" width="600" controls>
                                     <source src="{{ static 'video04.mp4' }}" type="video/mp4">
                                     Your browser does not support HTML video.
                                 </video>
@@ -328,7 +328,7 @@
                                 <h5 class="modal-title">Simple School Rules</h5>
                             </div>
                             <div class="modal-body">
-                                <video id="video05a" width="600" controls>
+                                <video id="video05a" width="600">
                                     <source src="{{ static 'video05.mp4' }}" type="video/mp4">
                                     Your browser does not support HTML video.
                                 </video>
@@ -382,7 +382,7 @@
                                 <h5 class="modal-title">The Knights who say Ni</h5>
                             </div>
                             <div class="modal-body">
-                                <video id="video06a" width="600" controls>
+                                <video id="video06a" width="600" >
                                     <source src="{{ static 'video06.mp4' }}" type="video/mp4">
                                     Your browser does not support HTML video.
                                 </video>
@@ -537,7 +537,7 @@
 
                 <div id="video_07">
                     <h5>SPAM</h5>
-                    <video id="video07a" width="600" controls>
+                    <video id="video07a" width="600" >
                         <source src="{{ static 'video07.mp4' }}" type="video/mp4">
                         Your browser does not support HTML video.
                     </video>
@@ -545,7 +545,7 @@
                 </div>
                 <div id="video_08">
                     <h5>Mr Creosote wants a bucket</h5>
-                    <video id="video08a" width="600" controls>
+                    <video id="video08a" width="600" >
                         <source src="{{ static 'video08.mp4' }}" type="video/mp4">
                         Your browser does not support HTML video.
                     </video>
@@ -759,6 +759,18 @@
                     }, 2000); // 7 seconds delay for showing the fourth modal
                 });
             }
+        });
+
+        // Play video when the fourth modal is shown
+        $('#Modal_04').on('shown.bs.modal', function () {
+            var video = document.getElementById('video04');
+            video.play();
+        });
+
+        // Pause video when the fourth modal is hidden
+        $('#Modal_04').on('hidden.bs.modal', function () {
+            var video = document.getElementById('video04');
+            video.pause();
         });
 
         // Play video when the fifth modal part A is shown

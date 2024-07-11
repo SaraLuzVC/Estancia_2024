@@ -18,305 +18,305 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     aritmetica_001 = models.FloatField(label='16 + 4 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_002 = models.FloatField(label='12 + 8 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_003 = models.FloatField(label='9 + 11 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_004 = models.FloatField(label='7 + 13 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_005 = models.FloatField(label='15 + 5 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_006 = models.FloatField(label='14 + 6 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_007 = models.FloatField(label='10 + 10 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_008 = models.FloatField(label='8 + 12 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_009 = models.FloatField(label='6 + 14 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_010 = models.FloatField(label='5 + 15 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_011 = models.FloatField(label='4 + 16 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_012 = models.FloatField(label='3 + 17 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_013 = models.FloatField(label='2 + 18 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_014 = models.FloatField(label='1 + 19 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_015 = models.FloatField(label='0 + 20 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_016 = models.FloatField(label='18 + 2 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_017 = models.FloatField(label='17 + 3 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_018 = models.FloatField(label='13 + 7 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_019 = models.FloatField(label='11 + 9 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_020 = models.FloatField(label='19 + 1 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_021 = models.FloatField(label='20 + 0 =',
-                                       initial=20
+                                    #    initial=20
                                        )
     aritmetica_022 = models.FloatField(label='1 + 2 =',
-                                       initial=3
+                                    #    initial=3
                                        )
     aritmetica_023 = models.FloatField(label='2 + 3 =',
-                                       initial=5
+                                    #    initial=5
                                        )
     aritmetica_024 = models.FloatField(label='3 + 4 =',
-                                       initial=7
+                                    #    initial=7
                                        )
     aritmetica_025 = models.FloatField(label='4 + 5 =',
-                                       initial=9
+                                    #    initial=9
                                        )
     aritmetica_026 = models.FloatField(label='5 + 6 =',
-                                       initial=11
+                                    #    initial=11
                                        )
     aritmetica_027 = models.FloatField(label='6 + 7 =',
-                                       initial=13
+                                    #    initial=13
                                        )
     aritmetica_028 = models.FloatField(label='7 + 8 =',
-                                       initial=15
+                                    #    initial=15
                                        )
     aritmetica_029 = models.FloatField(label='8 + 9 =',
-                                       initial=17
+                                    #    initial=17
                                        )
     aritmetica_030 = models.FloatField(label='9 + 10 =',
-                                       initial=19
+                                    #    initial=19
                                        )
     aritmetica_031 = models.FloatField(label='10 + 11 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_032 = models.FloatField(label='11 + 12 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_033 = models.FloatField(label='12 + 13 =',
-                                       initial=25
+                                    #    initial=25
                                        )
     aritmetica_034 = models.FloatField(label='13 + 14 =',
-                                       initial=27
+                                    #    initial=27
                                        )
     aritmetica_035 = models.FloatField(label='14 + 15 =',
-                                       initial=29
+                                    #    initial=29
                                        )
     aritmetica_036 = models.FloatField(label='15 + 16 =',
-                                       initial=31
+                                    #    initial=31
                                        )
     aritmetica_037 = models.FloatField(label='16 + 17 =',
-                                       initial=33
+                                    #    initial=33
                                        )
     aritmetica_038 = models.FloatField(label='17 + 18 =',
-                                       initial=35
+                                    #    initial=35
                                        )
     aritmetica_039 = models.FloatField(label='18 + 19 =',
-                                       initial=37
+                                    #    initial=37
                                        )
     aritmetica_040 = models.FloatField(label='19 + 20 =',
-                                       initial=39
+                                    #    initial=39
                                        )
     aritmetica_041 = models.FloatField(label='20 + 1 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_042 = models.FloatField(label='19 + 2 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_043 = models.FloatField(label='18 + 3 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_044 = models.FloatField(label='17 + 4 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_045 = models.FloatField(label='16 + 5 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_046 = models.FloatField(label='15 + 6 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_047 = models.FloatField(label='14 + 7 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_048 = models.FloatField(label='13 + 8 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_049 = models.FloatField(label='12 + 9 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_050 = models.FloatField(label='11 + 10 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_051 = models.FloatField(label='10 + 11 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_052 = models.FloatField(label='9 + 12 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_053 = models.FloatField(label='8 + 13 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_054 = models.FloatField(label='7 + 14 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_055 = models.FloatField(label='6 + 15 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_056 = models.FloatField(label='5 + 16 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_057 = models.FloatField(label='4 + 17 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_058 = models.FloatField(label='3 + 18 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_059 = models.FloatField(label='2 + 19 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_060 = models.FloatField(label='1 + 20 =',
-                                       initial=21
+                                    #    initial=21
                                        )
     aritmetica_061 = models.FloatField(label='20 + 2 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_062 = models.FloatField(label='19 + 3 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_063 = models.FloatField(label='18 + 4 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_064 = models.FloatField(label='17 + 5 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_065 = models.FloatField(label='16 + 6 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_066 = models.FloatField(label='15 + 7 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_067 = models.FloatField(label='14 + 8 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_068 = models.FloatField(label='13 + 9 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_069 = models.FloatField(label='12 + 10 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_070 = models.FloatField(label='11 + 11 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_071 = models.FloatField(label='10 + 12 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_072 = models.FloatField(label='9 + 13 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_073 = models.FloatField(label='8 + 14 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_074 = models.FloatField(label='7 + 15 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_075 = models.FloatField(label='6 + 16 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_076 = models.FloatField(label='5 + 17 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_077 = models.FloatField(label='4 + 18 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_078 = models.FloatField(label="3 + 19 =",
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_079 = models.FloatField(label='2 + 20 =',
-                                       initial=22
+                                    #    initial=22
                                        )
     aritmetica_080 = models.FloatField(label='20 + 3 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_081 = models.FloatField(label='19 + 4 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_082 = models.FloatField(label='18 + 5 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_083 = models.FloatField(label='17 + 6 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_084 = models.FloatField(label='16 + 7 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_085 = models.FloatField(label='15 + 8 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_086 = models.FloatField(label='14 + 9 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_087 = models.FloatField(label='13 + 10 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_088 = models.FloatField(label='12 + 11 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_089 = models.FloatField(label='11 + 12 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_090 = models.FloatField(label='10 + 13 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_091 = models.FloatField(label='9 + 14 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_092 = models.FloatField(label='8 + 15 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_093 = models.FloatField(label='7 + 16 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_094 = models.FloatField(label='6 + 17 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_095 = models.FloatField(label='5 + 18 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_096 = models.FloatField(label='4 + 19 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_097 = models.FloatField(label='3 + 20 =',
-                                       initial=23
+                                    #    initial=23
                                        )
     aritmetica_098 = models.FloatField(label='20 + 4 =',
-                                       initial=24
+                                    #    initial=24
                                        )
     aritmetica_099 = models.FloatField(label='19 + 5 =',
-                                       initial=24
-                                       )
+                                    #    initial=24
+                                        )
     aritmetica_100 = models.FloatField(label='18 + 6 =',
-                                       initial=24
-                                       )
+                                    #    initial=24
+                                        )
     limosna_01 = models.FloatField(min=0)
     limosna_02 = models.FloatField(min=0)
     limosna_03 = models.FloatField(min=0)
@@ -330,7 +330,7 @@ class Player(BasePlayer):
 # FUNCTIONS
 
 
-def set_payoffs(player):
+def evaluation(player):
     # Define the correct answers for the arithmetic questions
     correct_answers = {
         "aritmetica_001": 20,
@@ -437,26 +437,20 @@ def set_payoffs(player):
 
     # Check if all arithmetic answers are correct
     all_correct = all(
-        getattr(player, field_name) == correct_answer
+        player.field_maybe_none(field_name) == correct_answer
         for field_name, correct_answer in correct_answers.items()
     )
+    print('prueba')
     print(all_correct)
 
-    # Calculate the payoff
-    if all_correct:
-        player.payoff = C.DINERO_INICIAL - (
-            player.limosna_01
-            + player.limosna_02
-            + player.limosna_03
-            + player.limosna_04
-            + player.limosna_05
-            + player.limosna_06
-            + player.limosna_07
-            + player.limosna_08
-        )
-    else:
-        player.payoff = 0
+    return all_correct
 
+def set_payoffs(player):
+    morralla_actual = C.DINERO_INICIAL-player.limosna_01-player.limosna_02-player.limosna_03-player.limosna_04-player.limosna_05-player.limosna_06-player.limosna_07-player.limosna_08
+    if evaluation(player):
+        player.payoff = morralla_actual + 100
+    else:
+        player.payoff = morralla_actual
 
 # PAGES
 class Introduction(Page):
@@ -584,26 +578,29 @@ class Sumas(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         set_payoffs(player)
-        
-        
+
+
 class Results(Page):
     @staticmethod
-    def vars_for_template(player):
-        return dict(
-            dinero_inicial=C.DINERO_INICIAL,
-            limosna_total=player.limosna_01
-            + player.limosna_02
-            + player.limosna_03
-            + player.limosna_04
-            + player.limosna_05
-            + player.limosna_06
-            + player.limosna_07
-            + player.limosna_08,
-        )
+    def vars_for_template(player: Player):
+        limosna_total = player.limosna_01 + player.limosna_02 + player.limosna_03 + player.limosna_04 + player.limosna_05 + player.limosna_06 + player.limosna_07 + player.limosna_08
+        if evaluation(player):
+            dinero_ganado = 100
+        else:
+            dinero_ganado = 0
+        subtotal = C.DINERO_INICIAL - limosna_total
+           
+        return {
+            "dinero_inicial": C.DINERO_INICIAL,
+            "limosna_total": limosna_total,
+            "dinero_ganado": dinero_ganado,
+            "subtotal": subtotal,
+        }
+
 
     @staticmethod
     def before_next_page(player, timeout_happened):
         set_payoffs(player)
 
 
-page_sequence = [Introduction, Sumas]
+page_sequence = [Introduction, Sumas, Results]
