@@ -29,8 +29,30 @@ class Player(BasePlayer):
 
 # FUNCTIONS
 # PAGES
+
+
+class Introduction(Page):
+    pass
+
+
 class Options(Page):
     form_model = 'player'
     form_fields = ['option', 'z_value']
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        if player.option == 'Option 1':
+            player.payoff = 1
+        else:
+            player.payoff = 5
 
-page_sequence = [Options]
+class Results(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            'option': player.option,
+            'z_value': player.z_value,
+            'payoff': player.payoff,
+        }
+
+page_sequence = [Options, Results]

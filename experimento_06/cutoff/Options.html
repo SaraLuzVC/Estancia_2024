@@ -44,16 +44,16 @@
         oninput="updateChart()">
 
     <datalist id="tickmarks">
-        <option value="0" label="a0"></option>
-        <option value="1" label="a1"></option>
-        <option value="2" label="a2"></option>
-        <option value="3" label="a3"></option>
-        <option value="4" label="a4"></option>
-        <option value="5" label="a5"></option>
-        <option value="6" label="a6"></option>
-        <option value="7" label="a7"></option>
-        <option value="8" label="a8"></option>
-        <option value="9" label="a9"></option>
+        <option value="0" label="00"></option>
+        <option value="1" label="01"></option>
+        <option value="2" label="02"></option>
+        <option value="3" label="03"></option>
+        <option value="4" label="04"></option>
+        <option value="5" label="05"></option>
+        <option value="6" label="06"></option>
+        <option value="7" label="07"></option>
+        <option value="8" label="08"></option>
+        <option value="9" label="09"></option>
         <option value="10" label="10"></option>
         <option value="11" label="11"></option>
         <option value="12" label="12"></option>
@@ -68,6 +68,8 @@
     </datalist>
 
     <div id="grafico_01"></div>
+    <div id="grafico_02"></div>
+    <div id="grafico_03"></div>
 
     {{ next_button }}
 
@@ -101,10 +103,78 @@
             });
         });
 
+        document.addEventListener('DOMContentLoaded', function () {
+            chart1 = Highcharts.chart('grafico_01', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Column Chart'
+                },
+                xAxis: {
+                    categories: ['Option 1', 'Option 2']
+                },
+                series: [
+                    {
+                        name: 'Yourself',
+                        data: [1, 5]
+                    },
+                    {
+                        name: 'Other player',
+                        data: [10, 10]
+                    }
+                ]
+            });
+            chart2 = Highcharts.chart('grafico_02', {
+                title: {
+                    text: 'Line Chart'
+                },
+                xAxis: {
+                    categories: ['Option 1', 'Option 2']
+                },
+                series: [
+                    {
+                        name: 'Yourself',
+                        data: [1, 5]
+                    },
+                    {
+                        name: 'Other player',
+                        data: [10, 10]
+                    }
+                ]
+            });
+            chart3 = Highcharts.chart('grafico_03', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Bar Chart'
+                },
+                xAxis: {
+                    categories: ['Option 1', 'Option 2']
+                },
+                series: [
+                    {
+                        name: 'Yourself',
+                        data: [1, 5]
+                    },
+                    {
+                        name: 'Other player',
+                        data: [10, 10]
+                    }
+                ]
+            });
+
+        });
+
         function updateChart() {
             var z_value = parseInt(z_value_range.value);
             z_value_display.textContent = z_value;
-            chart.series[1].data[1].update(z_value);
+            chart1.series[1].data[1].update(z_value);
+            chart2.series[1].data[1].update(z_value);
+            chart3.series[1].data[1].update(z_value);
+            // Set the value of the range in the form and player variable
+            forminputs['z_value'].value = `${z_value}`;
         }
     </script>
 </body>
