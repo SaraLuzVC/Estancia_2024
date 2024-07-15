@@ -70,38 +70,15 @@
     <div id="grafico_01"></div>
     <div id="grafico_02"></div>
     <div id="grafico_03"></div>
+    <div id="grafico_04"></div>
 
     {{ next_button }}
 
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script type="text/javascript">
-        var chart;
+        var chart1, chart2, chart3, chart4;
         var z_value_range = document.getElementById('z_value_range');
         var z_value_display = document.getElementById('z_value_display');
-
-        document.addEventListener('DOMContentLoaded', function () {
-            chart = Highcharts.chart('grafico_01', {
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: 'Column Chart'
-                },
-                xAxis: {
-                    categories: ['Option 1', 'Option 2']
-                },
-                series: [
-                    {
-                        name: 'Yourself',
-                        data: [1, 5]
-                    },
-                    {
-                        name: 'Other player',
-                        data: [10, 10]
-                    }
-                ]
-            });
-        });
 
         document.addEventListener('DOMContentLoaded', function () {
             chart1 = Highcharts.chart('grafico_01', {
@@ -164,6 +141,44 @@
                     }
                 ]
             });
+            chart4 = Highcharts.chart('grafico_04', {
+                chart: {
+                    type: 'scatter',
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Scatter Chart'
+                },
+                xAxis: {
+                    title: {
+                        text: 'Your Payoff'
+                    },
+                    labels: {
+                        format: '${value}'
+                    },
+                    startOnTick: true,
+                    endOnTick: true,
+                    showLastLabel: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Other Player Payoff'
+                    },
+                    labels: {
+                        format: '${value}'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Option 1',
+                        data: [[1, 10]]
+                    },
+                    {
+                        name: 'Option 2',
+                        data: [[5, 10]]
+                    }
+                ]
+                });
 
         });
 
@@ -173,6 +188,7 @@
             chart1.series[1].data[1].update(z_value);
             chart2.series[1].data[1].update(z_value);
             chart3.series[1].data[1].update(z_value);
+            chart4.series[1].data[0].update([5, z_value]);
             // Set the value of the range in the form and player variable
             forminputs['z_value'].value = `${z_value}`;
         }

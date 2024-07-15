@@ -24,6 +24,7 @@
         <div id="grafico_01" style="height: 400px; width: 100%;"></div>
         <div id="grafico_02" style="height: 400px; width: 100%;"></div>
         <div id="grafico_03" style="height: 400px; width: 100%;"></div>
+        <div id="grafico_04" style="height: 400px; width: 100%;"></div>
     </div>
 
     {{ next_button }}
@@ -57,7 +58,7 @@
                 }
                 debugger;
 
-                var chart1, chart2, chart3;
+                var chart1, chart2, chart3, chart4;
             chart1 = Highcharts.chart('grafico_01', {
                 chart: {
                     type: 'column'
@@ -135,7 +136,45 @@
                     }
                 ]
             });
-        
+            chart4 = Highcharts.chart('grafico_04', {
+                    chart: {
+                        type: 'scatter',
+                        zoomType: 'xy'
+                    },
+                    title: {
+                        text: 'Scatter Chart'
+                    },
+                    xAxis: {
+                        title: {
+                            text: 'Your Payoff'
+                        },
+                        labels: {
+                            format: '${value}'
+                        },
+                        startOnTick: true,
+                        endOnTick: true,
+                        showLastLabel: true
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Other Player Payoff'
+                        },
+                        labels: {
+                            format: '${value}'
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'What you chose',
+                            data: [[yourPayoff_youChose, otherPayoff_youChose]]
+                        },
+                        {
+                            name: 'What the other chose',
+                            data: [[yourPayoff_otherChose, otherPayoff_otherChose]]
+                        }
+                    ]
+            });
+
         });
 
     </script>
