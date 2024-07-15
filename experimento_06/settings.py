@@ -9,7 +9,7 @@ SESSION_CONFIGS = [
     dict(
         name='loss_aversion',
         app_sequence=['cutoff'],
-        num_demo_participants=1,
+        num_demo_participants=2,
     ),
 ]
 

@@ -1,9 +1,145 @@
 {{ block title }}Results{{ endblock }}
 {{ block content }}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+    </style>
+</head>
+<body>
+    <p>you chose {{player.option}}</p>
+    {{ if your_option}}
+        <p> with z = {{your_z_value}}</p>
+    {{ endif }}
 
-    <p>you chose {{option}}</p>
-    <p>you win {{payoff}}</p>
+    <p>the other player chose {{other_option_text}}</p>
+    {{ if other_option}}
+    <p> with z = {{other_z_value}}</p>
+    {{ endif }}
+    
+    <p><br>you win {{your_payoff}}</p>
+    <p>the other player won {{other_payoff}}<br></p>
+
+    <div>
+        <div id="grafico_01" style="height: 400px; width: 100%;"></div>
+        <div id="grafico_02" style="height: 400px; width: 100%;"></div>
+        <div id="grafico_03" style="height: 400px; width: 100%;"></div>
+    </div>
 
     {{ next_button }}
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+                debugger;
+                function parseBoolean(str) {
+                return str.toLowerCase() === 'true';
+            }
+                var yourOption = parseBoolean('{{ your_option}}');
+                var otherOption = parseBoolean('{{ other_option}}');
+                var yourZValue = parseInt({{ your_z_value}});
+                var otherZValue = parseInt({{ other_z_value}});
+                debugger;
 
-{{ endblock }}
+                if (yourOption) {
+                    var yourPayoff_youChose = 5;
+                    var otherPayoff_youChose = yourZValue;
+                } else {
+                    var yourPayoff_youChose = 1;
+                    var otherPayoff_youChose = 10;
+                }
+
+                if (otherOption) {
+                    var yourPayoff_otherChose = otherZValue;
+                    var otherPayoff_otherChose = 5;
+                } else {
+                    var otherPayoff_otherChose = 1;
+                    var yourPayoff_otherChose = 10;
+                }
+                debugger;
+
+                var chart1, chart2, chart3;
+            chart1 = Highcharts.chart('grafico_01', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Column Chart'
+                },
+                xAxis: {
+                    categories: ['Your payoff', 'Other player\'s payoff']
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'You chose',
+                        data: [yourPayoff_youChose, otherPayoff_youChose]
+                    },
+                    {
+                        name: 'He chose',
+                        data: [yourPayoff_otherChose, otherPayoff_otherChose]
+                    }
+                ]
+            });
+
+            chart2 = Highcharts.chart('grafico_02', {
+                title: {
+                    text: 'Line Chart'
+                },
+                xAxis: {
+                    categories: ['Sum is your payoff', 'Sum is Other player\'s payoff']
+                },
+                series: [
+                    {
+                        name: 'You chose',
+                        data: [yourPayoff_youChose, otherPayoff_youChose]
+                    },
+                    {
+                        name: 'He chose',
+                        data: [yourPayoff_otherChose, otherPayoff_otherChose]
+                    }
+                ]
+            });
+            chart3 = Highcharts.chart('grafico_03', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Bar Chart'
+                },
+                xAxis: {
+                    categories: ['You payoff', 'Other player payoff']
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'You chose',
+                        data: [yourPayoff_youChose, otherPayoff_youChose]
+                    },
+                    {
+                        name: 'He chose',
+                        data: [yourPayoff_otherChose, otherPayoff_otherChose]
+                    }
+                ]
+            });
+        
+        });
+
+    </script>
+    </body>
+    
+    </html>
+    {{ endblock }}
