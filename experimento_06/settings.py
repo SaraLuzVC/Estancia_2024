@@ -6,6 +6,11 @@ SESSION_CONFIGS = [
     #     app_sequence=['public_goods'],
     #     num_demo_participants=3,
     # ),
+    dict(
+        name='loss_aversion',
+        app_sequence=['cutoff'],
+        num_demo_participants=1,
+    ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs

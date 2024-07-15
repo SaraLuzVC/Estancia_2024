@@ -1,0 +1,109 @@
+{{ block title }}Decision{{ endblock }}
+{{ block content }}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+
+        datalist {
+                display: flex;
+                justify-content: space-between;
+                color: darkblue;
+                width: 80%;
+                }
+
+        input {
+                width: 80%;
+            }
+    </style>
+</head>
+<body>
+    <p>
+        You are endowed with 0 dollars, and the other is endowed with 0 dollars.
+        You have to decide between two outcomes:
+    </p>
+    <dl>
+        <dt>Option 1</dt>
+        <dd>You gain 1 dollar and the other gains 10 dollars.</dd>
+        <dt>Option 2</dt>
+        <dd>You gain 5 dollars and the other gains z dollars</dd>
+    </dl>
+
+
+    {{ formfield "option" }}
+
+    <p>
+        Choose a value for z:
+    </p>
+
+
+        
+<div style="display: none;">
+    {{ formfield "z_value" }}
+</div>
+
+<input type="range" list="tickmarks">
+
+<datalist id="tickmarks">
+    <option value="0"  label="0"></option>
+    <option value="5"  label="1"></option>
+    <option value="10" label="2"></option>
+    <option value="15" label="3"></option>
+    <option value="20" label="4"></option>
+    <option value="25" label="5"></option>
+    <option value="30" label="6"></option>
+    <option value="35" label="7"></option>
+    <option value="40" label="8"></option>
+    <option value="45" label="9"></option>
+    <option value="50" label="10"></option>
+    <option value="55" label="11"></option>
+    <option value="60" label="12"></option>
+    <option value="65" label="13"></option>
+    <option value="70" label="14"></option>
+    <option value="75" label="15"></option>
+    <option value="80" label="16"></option>
+    <option value="85" label="17"></option>
+    <option value="90" label ="18"></option>
+    <option value="95" label="19"></option>
+    <option value="100" label="20"></option>
+</datalist>
+
+<div id="grafico_01">
+</div>
+
+    {{ next_button }}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+    var z_value = document.getElementById('z_value');
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        Highcharts.chart('grafico_01', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Column Chart'
+            },
+            xAxis: {
+                categories: ['Option 1', 'Option 2']
+            },
+            series: [
+                {
+                    name: 'Yourself',
+                    data: [1, 5]
+                },
+                {
+                    name: 'Other player',
+                    data: [11, 20]
+                }
+            ]
+
+        });
+    });
+
+</script>
+    </body>
+    
+    </html>
+{{ endblock }}
